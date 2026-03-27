@@ -3,179 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A&M Associados — Dashboard Financeiro</title>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>A&M Associados — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--plum:#4a1a4a;--plum-dark:#3a1238;--plum-pale:#f0e6f0;--gray-bg:#f0eeea;--gray-light:#e8e8e8;--white:#fff;--text:#1a1a1a;--text-mid:#444;--text-light:#777;--green:#16a34a;--amber:#d97706;--red:#dc2626;--blue:#185fa5;--r:6px}
-body{font-family:'Open Sans',sans-serif;background:var(--gray-bg);color:var(--text);min-height:100vh}
-.topbar{background:var(--plum);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
-.topbar-left{display:flex;align-items:center;gap:1rem}
-.topbar-divider{width:1px;height:24px;background:rgba(255,255,255,.25)}
-.topbar-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.1em;text-transform:uppercase}
-.topbar-right{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
-.btn-top{background:rgba(255,255,255,.15);border:none;color:white;padding:.5rem 1rem;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
-.btn-top:hover{background:rgba(255,255,255,.25)}
-.btn-top.white{background:var(--white);color:var(--plum)}
-.btn-top svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+:root{
+  --plum:#4a1a4a;--plum-dk:#3a1238;--plum-lt:#f0e6f0;
+  --bg:#f0eeea;--card:#fff;--border:#e8e8e8;
+  --txt:#1a1a1a;--txt2:#444;--txt3:#777;
+  --green:#16a34a;--amber:#d97706;--blue:#185fa5;--red:#dc2626;
+  --r:6px;
+}
+body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+
+/* TOPBAR */
+.topbar{background:var(--plum);padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.tb-left{display:flex;align-items:center;gap:.875rem}
+.tb-div{width:1px;height:22px;background:rgba(255,255,255,.2)}
+.tb-title{font-size:10px;font-weight:700;color:rgba(255,255,255,.75);letter-spacing:.12em;text-transform:uppercase}
+.tb-right{display:flex;align-items:center;gap:.625rem;flex-wrap:wrap}
+.btn-tb{background:rgba(255,255,255,.15);border:none;color:#fff;padding:.45rem .9rem;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;font-family:inherit}
+.btn-tb:hover{background:rgba(255,255,255,.25)}
+.btn-tb.solid{background:#fff;color:var(--plum)}
+.btn-tb svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* MAIN */
 .main{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+/* METRICS */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.metric{background:var(--white);border-radius:var(--r);padding:1.25rem;border-left:3px solid transparent}
-.metric.total{border-color:var(--plum)}.metric.pendente{border-color:var(--amber)}.metric.pago{border-color:var(--green)}.metric.faturado{border-color:var(--blue)}
-.metric-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);margin-bottom:.5rem}
-.metric-val{font-size:22px;font-weight:800}
-.metric-val.plum{color:var(--plum)}.metric-val.amber{color:var(--amber)}.metric-val.green{color:var(--green)}.metric-val.blue{color:var(--blue)}
-.metric-sub{font-size:11px;color:var(--text-light);margin-top:.25rem}
-.panel{background:var(--white);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
-.panel-head{padding:1rem 1.25rem;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
-.panel-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--plum)}
+.metric{background:var(--card);border-radius:var(--r);padding:1.125rem;border-left:3px solid var(--border)}
+.metric.a{border-color:var(--plum)}.metric.b{border-color:var(--amber)}.metric.c{border-color:var(--green)}.metric.d{border-color:var(--blue)}
+.m-label{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--txt3);margin-bottom:.375rem}
+.m-val{font-size:21px;font-weight:800;color:var(--txt)}
+.m-val.a{color:var(--plum)}.m-val.b{color:var(--amber)}.m-val.c{color:var(--green)}.m-val.d{color:var(--blue)}
+.m-sub{font-size:11px;color:var(--txt3);margin-top:.2rem}
+
+/* PANEL */
+.panel{background:var(--card);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.panel-head{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.panel-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--plum)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:2px solid var(--border);padding:0 1.25rem}
+.tab{padding:.7rem 1rem;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab.on{color:var(--plum);border-bottom-color:var(--plum)}
+.tp{display:none}.tp.on{display:block}
+
+/* FILTERS */
 .filters{display:flex;gap:.5rem;flex-wrap:wrap}
-.filter-select,.filter-input{padding:.375rem .75rem;border:1px solid var(--gray-light);border-radius:var(--r);font-size:12px;font-family:'Open Sans',sans-serif;color:var(--text);background:var(--white)}
-.filter-select{appearance:none;-webkit-appearance:none;padding-right:1.75rem;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;cursor:pointer}
-.filter-select:focus,.filter-input:focus{outline:none;border-color:var(--plum)}
+.fi{padding:.35rem .7rem;border:1px solid var(--border);border-radius:var(--r);font-size:12px;font-family:inherit;color:var(--txt);background:var(--card);cursor:pointer}
+.fi:focus{outline:none;border-color:var(--plum)}
+select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:1.6rem}
+
+/* TABLE */
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{padding:.625rem 1rem;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);background:#f8f7f5;border-bottom:1px solid var(--gray-light);white-space:nowrap}
-td{padding:.75rem 1rem;border-bottom:1px solid #f0eeea;vertical-align:middle}
+th{padding:.55rem 1rem;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--txt3);background:#f8f7f5;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:.7rem 1rem;border-bottom:1px solid #f0eeea;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fafaf8}
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
-.b-pendente{background:#fef3c7;color:#92400e}.b-pago{background:#dcfce7;color:#14532d}.b-faturado{background:#e0e7ff;color:#3730a3}.b-enviado{background:#d1fae5;color:#065f46}
+.bp{background:#fef3c7;color:#92400e}.bg{background:#dcfce7;color:#14532d}.bb{background:#e0e7ff;color:#3730a3}.be{background:#d1fae5;color:#065f46}
 .dot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block}
-.codigo{font-family:monospace;font-size:11px;color:var(--text-light)}
-.actions{display:flex;gap:.375rem;justify-content:flex-end}
-.btn-action{padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid transparent}
-.btn-pagar{background:#fef3c7;color:#92400e;border-color:#fcd34d}.btn-pagar:hover{background:var(--amber);color:white}
-.btn-faturar{background:#dcfce7;color:#14532d;border-color:#86efac}.btn-faturar:hover{background:var(--green);color:white}
-.btn-ver{background:var(--gray-light);color:var(--text-mid)}.btn-ver:hover{background:#d1d1d1}
-.clientes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;padding:1rem}
-.cliente-card{background:#f8f7f5;border-radius:var(--r);padding:1.25rem;border:1px solid var(--gray-light)}
-.cc-nome{font-weight:700;font-size:14px;margin-bottom:3px}
-.cc-email{font-size:11px;color:var(--text-light);margin-bottom:.875rem}
-.cc-total{font-size:22px;font-weight:800;color:var(--plum);margin-bottom:2px}
-.cc-sub{font-size:11px;color:var(--text-light);margin-bottom:.875rem}
-.cc-actions{padding-top:.875rem;border-top:1px solid var(--gray-light)}
-.btn-fechar{background:var(--plum);color:white;border:none;padding:.625rem 1rem;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;width:100%}
-.btn-fechar:hover{background:var(--plum-dark)}
-.btn-fechar:disabled{opacity:.4;cursor:not-allowed}
-.sem-email{background:#fef3c7;color:#92400e;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700}
-.tabs{display:flex;border-bottom:2px solid var(--gray-light);padding:0 1.25rem}
-.tab{padding:.75rem 1rem;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
-.tab.active{color:var(--plum);border-bottom-color:var(--plum)}
-.tab-panel{display:none}.tab-panel.active{display:block}
-.empty{padding:3rem;text-align:center;color:var(--text-light);font-size:13px}
-.loading{padding:2rem;text-align:center;color:var(--text-light);font-size:13px}
-.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:1rem}
-.modal-backdrop.open{display:flex}
-.modal{background:var(--white);border-radius:8px;padding:1.5rem;width:680px;max-width:98vw;max-height:92vh;overflow-y:auto}
-.modal-title{font-size:14px;font-weight:700;color:var(--plum);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--gray-light)}
-.modal-row{display:flex;padding:.5rem 0;border-bottom:1px solid #f0eeea;font-size:12px}
-.modal-row:last-of-type{border:none}
-.modal-key{color:var(--text-light);width:150px;flex-shrink:0;font-weight:600}
-.modal-actions{display:flex;gap:.5rem;margin-top:1.25rem;justify-content:flex-end;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--gray-light)}
-.btn-mc{border:none;padding:.625rem 1.25rem;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem}
-.btn-mc.close{background:var(--gray-light);color:var(--text-mid)}
-.btn-mc.primary{background:var(--plum);color:white}.btn-mc.primary:hover{background:var(--plum-dark)}
-.btn-mc.success{background:var(--green);color:white}.btn-mc.success:hover{background:#15803d}
-.btn-mc:disabled{opacity:.4;cursor:not-allowed}
+.mono{font-family:monospace;font-size:11px;color:var(--txt3)}
+.acts{display:flex;gap:.3rem;justify-content:flex-end}
+.btn-a{padding:3px 9px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid transparent;font-family:inherit;transition:all .1s}
+.btn-pay{background:#fef3c7;color:#92400e;border-color:#fcd34d}.btn-pay:hover{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn-fat{background:#dcfce7;color:#14532d;border-color:#86efac}.btn-fat:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-see{background:var(--border);color:var(--txt2)}.btn-see:hover{background:#d1d1d1}
+
+/* CLIENT CARDS */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;padding:1rem}
+.ccard{background:#f8f7f5;border-radius:var(--r);padding:1.125rem;border:1px solid var(--border)}
+.cc-name{font-weight:700;font-size:13px;margin-bottom:2px}
+.cc-email{font-size:11px;color:var(--txt3);margin-bottom:.75rem}
+.cc-val{font-size:21px;font-weight:800;color:var(--plum);margin-bottom:2px}
+.cc-sub{font-size:11px;color:var(--txt3);margin-bottom:.875rem}
+.cc-foot{padding-top:.75rem;border-top:1px solid var(--border)}
+.btn-close{width:100%;background:var(--plum);color:#fff;border:none;padding:.575rem 1rem;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;font-family:inherit}
+.btn-close:hover{background:var(--plum-dk)}
+.btn-close:disabled{opacity:.4;cursor:not-allowed}
+.no-email{background:#fef3c7;color:#92400e;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700}
+
+/* EMPTY / LOADING */
+.empty{padding:3rem;text-align:center;color:var(--txt3);font-size:13px}
+.loading{padding:2rem;text-align:center;color:var(--txt3);font-size:13px}
+
+/* MODALS */
+.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
+.backdrop.on{display:flex}
+.modal{background:var(--card);border-radius:8px;padding:1.5rem;width:560px;max-width:94vw;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:14px;font-weight:700;color:var(--plum);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.mrow{display:flex;padding:.45rem 0;border-bottom:1px solid #f0eeea;font-size:12px}
+.mrow:last-of-type{border:none}
+.mkey{color:var(--txt3);width:145px;flex-shrink:0;font-weight:600}
+.macts{display:flex;gap:.5rem;margin-top:1rem;justify-content:flex-end;flex-wrap:wrap}
+.btn-m{border:none;padding:.575rem 1.125rem;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-m.cancel{background:var(--border);color:var(--txt2)}
+.btn-m.primary{background:var(--plum);color:#fff}.btn-m.primary:hover{background:var(--plum-dk)}
+.btn-m.success{background:var(--green);color:#fff}
+.btn-m:disabled{opacity:.4;cursor:not-allowed}
 
 /* FATURA PREVIEW */
-.fatura-doc{border:1px solid var(--gray-light);border-radius:var(--r);overflow:hidden;margin-bottom:1.25rem;font-size:12px}
-.fatura-header{background:var(--plum);color:white;padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
-.fatura-header-left h2{font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:2px}
-.fatura-header-left p{font-size:11px;opacity:.65;letter-spacing:.04em}
-.fatura-header-right{text-align:right}
-.fatura-header-right .fatura-num{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
-.fatura-header-right .fatura-data{font-size:13px;font-weight:700}
-.fatura-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--gray-light)}
-.fatura-info-item{padding:.875rem 1.25rem;border-right:1px solid var(--gray-light)}
-.fatura-info-item:last-child{border-right:none}
-.fatura-info-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:4px}
-.fatura-info-val{font-size:13px;font-weight:700;color:var(--text)}
-.fatura-items{padding:0}
-.fatura-items table{width:100%;border-collapse:collapse;font-size:12px}
-.fatura-items th{padding:8px 14px;background:#f8f7f5;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);border-bottom:1px solid var(--gray-light);text-align:left}
-.fatura-items td{padding:10px 14px;border-bottom:1px solid #f4f3f1;vertical-align:top}
-.fatura-items tr:last-child td{border-bottom:none}
-.fatura-items tr:hover td{background:#fafaf8}
-.item-codigo{font-family:monospace;font-size:10px;color:var(--text-light);display:block;margin-bottom:2px}
-.item-desc{font-weight:600;color:var(--text);display:block}
-.item-meta{font-size:11px;color:var(--text-light);margin-top:2px;display:block}
-.item-comprovante{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--blue);text-decoration:none;margin-top:4px;font-weight:600;padding:2px 6px;background:#eff6ff;border-radius:3px;border:1px solid #bfdbfe}
-.item-comprovante:hover{background:#dbeafe}
-.item-comprovante svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
-.fatura-total-row{background:var(--plum);color:white;display:flex;justify-content:space-between;align-items:center;padding:1rem 1.25rem}
-.fatura-total-label{font-size:11px;font-weight:700;opacity:.8;letter-spacing:.06em;text-transform:uppercase}
-.fatura-total-val{font-size:22px;font-weight:800}
-.fatura-footer-strip{background:#f8f7f5;padding:.75rem 1.25rem;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-light)}
+.fatura-wrap{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.fatura-top{background:var(--plum);color:#fff;padding:1.25rem 1.5rem}
+.fatura-top h3{font-size:17px;font-weight:800;margin-bottom:1px}
+.fatura-top p{font-size:11px;opacity:.65;margin-bottom:.75rem}
+.fatura-meta{display:flex;gap:1.5rem;flex-wrap:wrap}
+.fatura-meta div{display:flex;flex-direction:column;gap:2px}
+.fatura-meta label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}
+.fatura-meta span{font-size:12px;font-weight:700}
+.fatura-body{padding:1rem 1.5rem}
+.ftable{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:1rem}
+.ftable th{padding:5px 8px;background:#f8f7f5;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);border-bottom:1px solid var(--border);text-align:left}
+.ftable td{padding:7px 8px;border-bottom:1px solid #f4f2f6;font-size:11px}
+.ftable tr:last-child td{border:none}
+.ftable .comprovante{font-size:10px;color:var(--plum);text-decoration:none}
+.ftable .comprovante:hover{text-decoration:underline}
+.ftotal{background:var(--plum-lt);border-radius:var(--r);padding:.875rem 1rem;display:flex;justify-content:space-between;align-items:center}
+.ftotal-label{font-size:11px;font-weight:700;color:var(--plum)}
+.ftotal-val{font-size:19px;font-weight:800;color:var(--plum)}
 
-.field-group{margin-bottom:.875rem}
-.field-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:.375rem;display:block}
-.field-input{width:100%;padding:.625rem .875rem;border:1.5px solid var(--gray-light);border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:13px;color:var(--text)}
-.field-input:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(74,26,74,.08)}
-.status-msg{padding:.75rem 1rem;border-radius:var(--r);font-size:12px;margin-top:.75rem;display:none}
-.status-msg.show{display:block}
-.status-msg.ok{background:#dcfce7;color:#14532d;border:1px solid #86efac}
-.status-msg.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
-.status-msg.info{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc}
-@media(max-width:768px){.metrics{grid-template-columns:1fr 1fr}.fatura-info{grid-template-columns:1fr}}
+/* FORM FIELDS */
+.fg{margin-bottom:.875rem}
+.flabel{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);margin-bottom:.35rem;display:block}
+.finput{width:100%;padding:.575rem .875rem;border:1.5px solid var(--border);border-radius:var(--r);font-family:inherit;font-size:13px;color:var(--txt)}
+.finput:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(74,26,74,.07)}
+textarea.finput{resize:vertical;min-height:60px}
+
+/* STATUS MSG */
+.smsg{padding:.7rem 1rem;border-radius:var(--r);font-size:12px;margin-top:.75rem;display:none}
+.smsg.on{display:block}
+.smsg.ok{background:#dcfce7;color:#14532d;border:1px solid #86efac}
+.smsg.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.smsg.info{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc}
+
+@media(max-width:720px){.metrics{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
+
 <div class="topbar">
-  <div class="topbar-left">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" style="height:28px;width:auto">
-      <defs><style>.lc{fill:#fff}</style></defs>
+  <div class="tb-left">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" style="height:26px;width:auto;display:block">
       <g>
-        <path class="lc" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
-        <path class="lc" d="M55.0,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23h-2.70V13.63Z"/>
-        <path class="lc" d="M45.0,27.26l-2.39,1.43c.01.02.64,1.06.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/>
+        <path fill="#fff" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
+        <path fill="#fff" d="M55,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23H55V13.63Z"/>
+        <path fill="#fff" d="M45,27.26l-2.39,1.43c.64,1.06.70,2.40.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/>
       </g>
     </svg>
-    <div class="topbar-divider"></div>
-    <div class="topbar-title">Dashboard Financeiro</div>
+    <div class="tb-div"></div>
+    <div class="tb-title">Dashboard Financeiro</div>
   </div>
-  <div class="topbar-right">
-    <button class="btn-top" onclick="carregarDados()">
+  <div class="tb-right">
+    <button class="btn-tb" onclick="carregarDados()">
       <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
       Atualizar
     </button>
-    <a href="clientes.html" class="btn-top">Clientes</a>
-    <a href="index.html" class="btn-top white">+ Nova despesa</a>
+    <a href="clientes.html" class="btn-tb">Clientes</a>
+    <a href="index.html" class="btn-tb solid">+ Nova despesa</a>
   </div>
 </div>
 
 <div class="main">
   <div class="metrics">
-    <div class="metric total"><div class="metric-label">Total geral</div><div class="metric-val plum" id="m-total">R$ 0,00</div><div class="metric-sub" id="m-total-qtd">0 despesas</div></div>
-    <div class="metric pendente"><div class="metric-label">Pendente de pagamento</div><div class="metric-val amber" id="m-pendente">R$ 0,00</div><div class="metric-sub" id="m-pendente-qtd">0 despesas</div></div>
-    <div class="metric pago"><div class="metric-label">Pago — aguardando fatura</div><div class="metric-val green" id="m-pago">R$ 0,00</div><div class="metric-sub" id="m-pago-qtd">0 despesas</div></div>
-    <div class="metric faturado"><div class="metric-label">Já faturado/enviado</div><div class="metric-val blue" id="m-faturado">R$ 0,00</div><div class="metric-sub" id="m-faturado-qtd">0 despesas</div></div>
+    <div class="metric a"><div class="m-label">Total geral</div><div class="m-val a" id="m-total">R$ 0,00</div><div class="m-sub" id="m-total-n">0 despesas</div></div>
+    <div class="metric b"><div class="m-label">Pendente de pagamento</div><div class="m-val b" id="m-pend">R$ 0,00</div><div class="m-sub" id="m-pend-n">0 despesas</div></div>
+    <div class="metric c"><div class="m-label">Pago — aguardando fatura</div><div class="m-val c" id="m-pago">R$ 0,00</div><div class="m-sub" id="m-pago-n">0 despesas</div></div>
+    <div class="metric d"><div class="m-label">Faturado / enviado</div><div class="m-val d" id="m-fat">R$ 0,00</div><div class="m-sub" id="m-fat-n">0 despesas</div></div>
   </div>
 
   <div class="panel">
     <div class="tabs">
-      <div class="tab active" onclick="showTab('despesas',this)">Todas as despesas</div>
-      <div class="tab" onclick="showTab('clientes',this)">Fechar faturas</div>
+      <div class="tab on" onclick="showTab('desp',this)">Todas as despesas</div>
+      <div class="tab" onclick="showTab('fat',this)">Fechar faturas</div>
     </div>
 
-    <div id="tab-despesas" class="tab-panel active">
+    <!-- TAB DESPESAS -->
+    <div id="tp-desp" class="tp on">
       <div class="panel-head">
         <div class="panel-title">Despesas lançadas</div>
         <div class="filters">
-          <input class="filter-input" type="text" id="f-busca" placeholder="Buscar..." oninput="renderTabela()">
-          <select class="filter-select" id="f-status" onchange="renderTabela()">
+          <input class="fi" type="text" id="f-busca" placeholder="Buscar..." oninput="renderTabela()">
+          <select class="fi" id="f-status" onchange="renderTabela()">
             <option value="">Todos os status</option>
             <option>Pendente</option><option>Pago</option><option>Faturado</option><option>Enviado</option>
           </select>
-          <select class="filter-select" id="f-area" onchange="renderTabela()">
+          <select class="fi" id="f-area" onchange="renderTabela()">
             <option value="">Todas as áreas</option>
             <option>Trabalhista</option><option>Tributário</option><option>Cível</option>
             <option>Societário</option><option>Empresarial</option><option>Imobiliário</option>
+            <option>Administrativo</option><option>Ambiental</option><option>Previdenciário</option>
           </select>
-          <select class="filter-select" id="f-atuacao" onchange="renderTabela()">
+          <select class="fi" id="f-atuacao" onchange="renderTabela()">
             <option value="">Contenciosa e Consultiva</option>
             <option value="Contenciosa">Contenciosa</option>
             <option value="Consultiva">Consultiva</option>
@@ -191,445 +213,442 @@ tr:hover td{background:#fafaf8}
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
-        <div class="loading" id="loading">Carregando...</div>
-        <div class="empty" id="empty" style="display:none">Nenhuma despesa encontrada.</div>
+        <div class="loading" id="loading-txt">Carregando...</div>
+        <div class="empty" id="empty-txt" style="display:none">Nenhuma despesa encontrada.</div>
       </div>
     </div>
 
-    <div id="tab-clientes" class="tab-panel">
+    <!-- TAB FATURAS -->
+    <div id="tp-fat" class="tp">
       <div class="panel-head">
         <div class="panel-title">Clientes com despesas pagas — prontos para faturar</div>
-        <select class="filter-select" id="f-mes" onchange="renderClientes()">
+        <select class="fi" id="f-mes" onchange="renderClientes()">
           <option value="">Todos os meses</option>
         </select>
       </div>
-      <div class="clientes-grid" id="clientes-grid">
-        <div class="loading">Carregando...</div>
-      </div>
+      <div class="cgrid" id="cgrid"><div class="loading">Carregando...</div></div>
     </div>
   </div>
 </div>
 
 <!-- MODAL DETALHE -->
-<div class="modal-backdrop" id="modal-detalhe">
+<div class="backdrop" id="mod-det">
   <div class="modal">
-    <div class="modal-title" id="md-title">Detalhes</div>
-    <div id="md-body"></div>
-    <div class="modal-actions">
-      <button class="btn-mc close" onclick="fecharModal('modal-detalhe')">Fechar</button>
-      <button class="btn-mc primary" id="btn-md-acao" style="display:none"></button>
+    <div class="modal-title" id="det-title">Detalhes</div>
+    <div id="det-body"></div>
+    <div class="macts">
+      <button class="btn-m cancel" onclick="closeModal('mod-det')">Fechar</button>
+      <button class="btn-m primary" id="det-btn" style="display:none"></button>
     </div>
   </div>
 </div>
 
 <!-- MODAL FATURA -->
-<div class="modal-backdrop" id="modal-fatura">
+<div class="backdrop" id="mod-fat">
   <div class="modal">
-    <div class="modal-title" id="mf-title">Fechar fatura</div>
-    <div id="mf-preview"></div>
-    <div class="field-group">
-      <label class="field-label">E-mail do cliente</label>
-      <input class="field-input" id="fatura-email" type="email" placeholder="email@cliente.com.br">
+    <div class="modal-title" id="fat-title">Fechar fatura</div>
+    <div id="fat-preview"></div>
+    <div class="fg">
+      <label class="flabel">E-mail do cliente</label>
+      <input class="finput" id="fat-email" type="email" placeholder="email@cliente.com.br">
     </div>
-    <div class="status-msg" id="mf-status"></div>
-    <div class="modal-actions">
-      <button class="btn-mc close" onclick="fecharModal('modal-fatura')">Cancelar</button>
-      <button class="btn-mc primary" onclick="baixarPDF()">⬇ Baixar PDF</button>
-      <button class="btn-mc success" id="btn-enviar-email" onclick="enviarEmail()">Enviar por e-mail →</button>
+    <div class="fg">
+      <label class="flabel">Observações / instrução de pagamento (opcional)</label>
+      <textarea class="finput" id="fat-obs" placeholder="Ex: Pagar via PIX ou transferência bancária até o vencimento."></textarea>
+    </div>
+    <div class="smsg" id="fat-msg"></div>
+    <div class="macts">
+      <button class="btn-m cancel" onclick="closeModal('mod-fat')">Cancelar</button>
+      <button class="btn-m primary" id="btn-pdf" onclick="baixarPDF()">⬇ Baixar PDF</button>
+      <button class="btn-m success" id="btn-email" onclick="enviarEmail()">Enviar por e-mail →</button>
     </div>
   </div>
 </div>
 
 <script>
 var sb;
-var todasDespesas=[], todosClientes={}, faturaAtual=null;
+var despesas = [], clientes = {}, faturaAtual = null;
 
-function fmt(v){return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function fmtData(d){if(!d)return '—';var p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
-function badgeStatus(s){
-  var m={'Pendente':'b-pendente','Pago':'b-pago','Faturado':'b-faturado','Enviado':'b-enviado'};
-  return '<span class="badge '+(m[s]||'b-pendente')+'"><span class="dot"></span> '+s+'</span>';
+var SB_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
+var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
+
+function R(v){ return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function D(d){ if(!d) return '—'; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+function badge(s){
+  var c={Pendente:'bp',Pago:'bg',Faturado:'bb',Enviado:'be'};
+  return '<span class="badge '+(c[s]||'bp')+'"><span class="dot"></span> '+s+'</span>';
 }
 
 async function carregarDados(){
-  document.getElementById('loading').style.display='block';
-  document.getElementById('empty').style.display='none';
+  document.getElementById('loading-txt').style.display='block';
+  document.getElementById('empty-txt').style.display='none';
   document.getElementById('tbody').innerHTML='';
-  var {data:desp}=await sb.from('despesas').select('*').order('criado_em',{ascending:false});
-  var {data:cli}=await sb.from('clientes').select('*');
-  todasDespesas=desp||[];
-  todosClientes={};
-  (cli||[]).forEach(function(c){todosClientes[c.nome.trim().toLowerCase()]=c;});
-  document.getElementById('loading').style.display='none';
-  atualizarMetricas();
-  renderTabela();
-  renderClientes();
-  popularFiltroMes();
+  var r1 = await sb.from('despesas').select('*').order('criado_em',{ascending:false});
+  var r2 = await sb.from('clientes').select('*');
+  despesas = r1.data||[];
+  clientes = {};
+  (r2.data||[]).forEach(function(c){ clientes[c.nome.trim().toLowerCase()] = c; });
+  document.getElementById('loading-txt').style.display='none';
+  metricas(); renderTabela(); renderClientes(); filtroMes();
 }
 
-function atualizarMetricas(){
-  var total=0,pV=0,pQ=0,pgV=0,pgQ=0,fV=0,fQ=0;
-  todasDespesas.forEach(function(d){
-    total+=Number(d.valor);
-    if(d.status==='Pendente'){pV+=Number(d.valor);pQ++;}
-    else if(d.status==='Pago'){pgV+=Number(d.valor);pgQ++;}
-    else if(d.status==='Faturado'||d.status==='Enviado'){fV+=Number(d.valor);fQ++;}
+function metricas(){
+  var tot=0,pV=0,pQ=0,gV=0,gQ=0,fV=0,fQ=0;
+  despesas.forEach(function(d){
+    tot+=+d.valor;
+    if(d.status==='Pendente'){pV+=+d.valor;pQ++;}
+    else if(d.status==='Pago'){gV+=+d.valor;gQ++;}
+    else if(d.status==='Faturado'||d.status==='Enviado'){fV+=+d.valor;fQ++;}
   });
-  document.getElementById('m-total').textContent=fmt(total);
-  document.getElementById('m-total-qtd').textContent=todasDespesas.length+' despesas';
-  document.getElementById('m-pendente').textContent=fmt(pV);
-  document.getElementById('m-pendente-qtd').textContent=pQ+' despesas';
-  document.getElementById('m-pago').textContent=fmt(pgV);
-  document.getElementById('m-pago-qtd').textContent=pgQ+' despesas';
-  document.getElementById('m-faturado').textContent=fmt(fV);
-  document.getElementById('m-faturado-qtd').textContent=fQ+' despesas';
+  document.getElementById('m-total').textContent=R(tot);
+  document.getElementById('m-total-n').textContent=despesas.length+' despesas';
+  document.getElementById('m-pend').textContent=R(pV);
+  document.getElementById('m-pend-n').textContent=pQ+' despesas';
+  document.getElementById('m-pago').textContent=R(gV);
+  document.getElementById('m-pago-n').textContent=gQ+' despesas';
+  document.getElementById('m-fat').textContent=R(fV);
+  document.getElementById('m-fat-n').textContent=fQ+' despesas';
 }
 
 function renderTabela(){
-  var busca=document.getElementById('f-busca').value.toLowerCase();
-  var fS=document.getElementById('f-status').value;
-  var fA=document.getElementById('f-area').value;
-  var fAt=document.getElementById('f-atuacao').value;
-  var f=todasDespesas.filter(function(d){
-    if(busca&&!d.cliente.toLowerCase().includes(busca)&&!d.nome_adv.toLowerCase().includes(busca))return false;
-    if(fS&&d.status!==fS)return false;
-    if(fA&&d.area_direito!==fA)return false;
-    if(fAt&&d.atuacao!==fAt)return false;
+  var q=document.getElementById('f-busca').value.toLowerCase();
+  var fs=document.getElementById('f-status').value;
+  var fa=document.getElementById('f-area').value;
+  var ft=document.getElementById('f-atuacao').value;
+  var f=despesas.filter(function(d){
+    if(q&&!d.cliente.toLowerCase().includes(q)&&!d.nome_adv.toLowerCase().includes(q)) return false;
+    if(fs&&d.status!==fs) return false;
+    if(fa&&d.area_direito!==fa) return false;
+    if(ft&&d.atuacao!==ft) return false;
     return true;
   });
-  var tbody=document.getElementById('tbody');
-  document.getElementById('empty').style.display=f.length===0?'block':'none';
-  tbody.innerHTML=f.map(function(d){
+  document.getElementById('empty-txt').style.display=f.length?'none':'block';
+  document.getElementById('tbody').innerHTML=f.map(function(d){
     var ac='';
-    if(d.status==='Pendente')ac+='<button class="btn-action btn-pagar" onclick="atualizarStatus(\''+d.id+'\',\'Pago\')">Marcar pago</button>';
-    if(d.status==='Pago')ac+='<button class="btn-action btn-faturar" onclick="atualizarStatus(\''+d.id+'\',\'Faturado\')">Faturar</button>';
-    ac+='<button class="btn-action btn-ver" onclick="verDetalhe(\''+d.id+'\')">Ver</button>';
+    if(d.status==='Pendente') ac+='<button class="btn-a btn-pay" onclick="setStatus(\''+d.id+'\',\'Pago\')">Marcar pago</button>';
+    if(d.status==='Pago') ac+='<button class="btn-a btn-fat" onclick="setStatus(\''+d.id+'\',\'Faturado\')">Faturar</button>';
+    ac+='<button class="btn-a btn-see" onclick="verDet(\''+d.id+'\')">Ver</button>';
     return '<tr>'
-      +'<td><span class="codigo">'+(d.codigo||'—')+'</span></td>'
-      +'<td>'+fmtData(d.data_despesa)+'</td>'
+      +'<td><span class="mono">'+(d.codigo||'—')+'</span></td>'
+      +'<td>'+D(d.data_despesa)+'</td>'
       +'<td>'+d.nome_adv+'</td>'
-      +'<td><strong>'+d.cliente+'</strong>'+(d.processo?'<br><span style="font-size:10px;color:var(--text-light)">'+d.processo+'</span>':'')+'</td>'
-      +'<td>'+d.tipo_despesa+'</td>'
+      +'<td><strong>'+d.cliente+'</strong>'+(d.processo?'<br><small style="color:var(--txt3)">'+d.processo+'</small>':'')+'</td>'
+      +'<td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+d.tipo_despesa+'</td>'
       +'<td>'+(d.area_direito||'—')+'</td>'
-      +'<td style="text-align:right;font-weight:700">'+fmt(d.valor)+'</td>'
-      +'<td>'+badgeStatus(d.status)+'</td>'
-      +'<td><div class="actions">'+ac+'</div></td></tr>';
+      +'<td style="text-align:right;font-weight:700">'+R(d.valor)+'</td>'
+      +'<td>'+badge(d.status)+'</td>'
+      +'<td><div class="acts">'+ac+'</div></td>'
+      +'</tr>';
   }).join('');
 }
 
 function renderClientes(){
-  var fMes=document.getElementById('f-mes').value;
-  var pagas=todasDespesas.filter(function(d){
-    if(d.status!=='Pago')return false;
-    if(fMes&&d.data_despesa&&d.data_despesa.slice(0,7)!==fMes)return false;
-    return true;
+  var fm=document.getElementById('f-mes').value;
+  var pagas=despesas.filter(function(d){
+    return d.status==='Pago' && (!fm||!d.data_despesa||d.data_despesa.slice(0,7)===fm);
   });
-  var porCliente={};
+  var por={};
   pagas.forEach(function(d){
-    if(!porCliente[d.cliente])porCliente[d.cliente]={total:0,qtd:0,ids:[],despesas:[]};
-    porCliente[d.cliente].total+=Number(d.valor);
-    porCliente[d.cliente].qtd++;
-    porCliente[d.cliente].ids.push(d.id);
-    porCliente[d.cliente].despesas.push(d);
+    if(!por[d.cliente]) por[d.cliente]={total:0,qtd:0,ids:[],list:[]};
+    por[d.cliente].total+=+d.valor;
+    por[d.cliente].qtd++;
+    por[d.cliente].ids.push(d.id);
+    por[d.cliente].list.push(d);
   });
-  var grid=document.getElementById('clientes-grid');
-  var entries=Object.entries(porCliente);
-  if(entries.length===0){grid.innerHTML='<div class="empty">Nenhum cliente com despesas pagas aguardando fatura.</div>';return;}
-  grid.innerHTML=entries.sort(function(a,b){return b[1].total-a[1].total;}).map(function(e){
-    var cli=todosClientes[e[0].trim().toLowerCase()];
-    var emailInfo=cli?'<div class="cc-email">'+cli.email+'</div>':'<div class="cc-email"><span class="sem-email">Sem e-mail cadastrado</span></div>';
-    var dis=!cli?'disabled title="Cadastre o e-mail primeiro"':'';
-    return '<div class="cliente-card">'
-      +'<div class="cc-nome">'+e[0]+'</div>'+emailInfo
-      +'<div class="cc-total">'+fmt(e[1].total)+'</div>'
+  var grid=document.getElementById('cgrid');
+  var ents=Object.entries(por);
+  if(!ents.length){grid.innerHTML='<div class="empty">Nenhum cliente com despesas pagas aguardando fatura.</div>';return;}
+  grid.innerHTML=ents.sort(function(a,b){return b[1].total-a[1].total;}).map(function(e){
+    var cli=clientes[e[0].trim().toLowerCase()];
+    var emailHtml=cli?'<div class="cc-email">'+cli.email+'</div>':'<div class="cc-email"><span class="no-email">Sem e-mail cadastrado</span></div>';
+    var dis=cli?'':'disabled title="Cadastre o e-mail primeiro"';
+    return '<div class="ccard">'
+      +'<div class="cc-name">'+e[0]+'</div>'+emailHtml
+      +'<div class="cc-val">'+R(e[1].total)+'</div>'
       +'<div class="cc-sub">'+e[1].qtd+' despesa(s) a faturar</div>'
-      +'<div class="cc-actions"><button class="btn-fechar" '+dis+' onclick="abrirFatura(\''+encodeURIComponent(e[0])+'\')">Fechar fatura →</button></div>'
+      +'<div class="cc-foot"><button class="btn-close" '+dis+' onclick="abrirFatura(\''+encodeURIComponent(e[0])+'\')">Fechar fatura →</button></div>'
       +'</div>';
   }).join('');
 }
 
-function popularFiltroMes(){
-  var meses={};
-  todasDespesas.forEach(function(d){if(d.data_despesa)meses[d.data_despesa.slice(0,7)]=true;});
+function filtroMes(){
+  var m={};
+  despesas.forEach(function(d){if(d.data_despesa)m[d.data_despesa.slice(0,7)]=true;});
   var sel=document.getElementById('f-mes');
-  sel.innerHTML='<option value="">Todos os meses</option>'+Object.keys(meses).sort().reverse().map(function(m){
-    var p=m.split('-');return '<option value="'+m+'">'+p[1]+'/'+p[0]+'</option>';
+  sel.innerHTML='<option value="">Todos os meses</option>'+Object.keys(m).sort().reverse().map(function(k){
+    var p=k.split('-');return '<option value="'+k+'">'+p[1]+'/'+p[0]+'</option>';
   }).join('');
 }
 
-async function atualizarStatus(id,s){
+async function setStatus(id,s){
   await sb.from('despesas').update({status:s}).eq('id',id);
   await carregarDados();
 }
 
-function verDetalhe(id){
-  var d=todasDespesas.find(function(x){return x.id===id;});
-  if(!d)return;
-  document.getElementById('md-title').textContent=d.codigo||'Detalhes';
-  document.getElementById('md-body').innerHTML=[
+function verDet(id){
+  var d=despesas.find(function(x){return x.id===id;});
+  if(!d) return;
+  document.getElementById('det-title').textContent=d.codigo||'Detalhes';
+  document.getElementById('det-body').innerHTML=[
     ['Advogado(a)',d.nome_adv],['Cliente',d.cliente],
     ['Processo/Caso',d.processo||d.nome_caso||'—'],
-    ['Área do direito',d.area_direito||'—'],['Atuação',d.atuacao||'—'],
-    ['Tipo de despesa',d.tipo_despesa],['Data',fmtData(d.data_despesa)],
-    ['Valor',fmt(d.valor)],['Descrição',d.descricao||'—'],
+    ['Área',d.area_direito||'—'],['Atuação',d.atuacao||'—'],
+    ['Tipo',d.tipo_despesa],['Data',D(d.data_despesa)],
+    ['Valor',R(d.valor)],['Descrição',d.descricao||'—'],
     ['Forma pgto',d.forma_pagamento||'—'],
-    ['Status pgto',d.status_pagamento||'—'],
     ['Status',d.status],
-    ['Comprovante',d.anexo_url?'<a href="'+d.anexo_url+'" target="_blank" style="color:var(--blue);font-weight:600">Ver comprovante ↗</a>':'—'],
+    ['Comprovante',d.anexo_url?'<a href="'+d.anexo_url+'" target="_blank" style="color:var(--plum)">Ver anexo</a>':'—'],
     ['Lançado em',d.criado_em?new Date(d.criado_em).toLocaleString('pt-BR'):'—'],
-  ].map(function(r){return '<div class="modal-row"><div class="modal-key">'+r[0]+'</div><div style="font-size:12px">'+r[1]+'</div></div>';}).join('');
-  var btn=document.getElementById('btn-md-acao');
-  if(d.status==='Pendente'){btn.style.display='block';btn.textContent='Marcar como pago';btn.onclick=function(){atualizarStatus(d.id,'Pago');fecharModal('modal-detalhe');};}
-  else if(d.status==='Pago'){btn.style.display='block';btn.textContent='Marcar como faturado';btn.onclick=function(){atualizarStatus(d.id,'Faturado');fecharModal('modal-detalhe');};}
+  ].map(function(r){return '<div class="mrow"><div class="mkey">'+r[0]+'</div><div style="font-size:12px">'+r[1]+'</div></div>';}).join('');
+  var btn=document.getElementById('det-btn');
+  if(d.status==='Pendente'){btn.style.display='block';btn.textContent='Marcar como pago';btn.onclick=function(){setStatus(d.id,'Pago');closeModal('mod-det');};}
+  else if(d.status==='Pago'){btn.style.display='block';btn.textContent='Marcar como faturado';btn.onclick=function(){setStatus(d.id,'Faturado');closeModal('mod-det');};}
   else btn.style.display='none';
-  document.getElementById('modal-detalhe').classList.add('open');
+  openModal('mod-det');
 }
 
-function abrirFatura(nomeEnc){
-  var nome=decodeURIComponent(nomeEnc);
-  var pagas=todasDespesas.filter(function(d){return d.cliente===nome&&d.status==='Pago';});
-  var total=pagas.reduce(function(s,d){return s+Number(d.valor);},0);
-  var cli=todosClientes[nome.trim().toLowerCase()];
-  var hoje=new Date();
-  var mes=hoje.toLocaleString('pt-BR',{month:'long',year:'numeric'});
-  var venc=new Date(hoje); venc.setDate(venc.getDate()+10);
-  var numFatura='FAT-'+String(hoje.getFullYear()).slice(-2)+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100);
+function abrirFatura(enc){
+  var nome=decodeURIComponent(enc);
+  var lista=despesas.filter(function(d){return d.cliente===nome&&d.status==='Pago';});
+  var total=lista.reduce(function(s,d){return s+(+d.valor);},0);
+  var cli=clientes[nome.trim().toLowerCase()];
+  var mes=new Date().toLocaleString('pt-BR',{month:'long',year:'numeric'});
+  var venc=new Date(); venc.setDate(venc.getDate()+10);
+  faturaAtual={nome:nome,lista:lista,total:total,email:cli?cli.email:'',ids:lista.map(function(d){return d.id;}),mes:mes,venc:venc.toLocaleDateString('pt-BR')};
+  document.getElementById('fat-email').value=cli?cli.email:'';
+  document.getElementById('fat-obs').value='';
+  document.getElementById('fat-title').textContent='Fatura — '+nome;
+  document.getElementById('fat-msg').className='smsg';
+  document.getElementById('btn-email').disabled=false;
+  document.getElementById('btn-email').textContent='Enviar por e-mail →';
 
-  faturaAtual={cliente:nome,despesas:pagas,total:total,email:cli?cli.email:'',ids:pagas.map(function(d){return d.id;}),mes:mes,vencimento:venc.toLocaleDateString('pt-BR'),numero:numFatura};
-
-  document.getElementById('fatura-email').value=cli?cli.email:'';
-  document.getElementById('mf-title').textContent='Fatura '+numFatura+' — '+nome;
-  document.getElementById('mf-status').className='status-msg';
-  document.getElementById('btn-enviar-email').textContent='Enviar por e-mail →';
-  document.getElementById('btn-enviar-email').disabled=false;
-
-  var linhas=pagas.map(function(d){
-    var proc=d.processo?'<span class="item-meta">Processo: '+d.processo+'</span>':d.nome_caso?'<span class="item-meta">Caso: '+d.nome_caso+'</span>':'';
-    var meta='<span class="item-meta">'+d.nome_adv+' · '+(d.area_direito||'')+(d.atuacao?' · '+d.atuacao:'')+'</span>';
-    var comp=d.anexo_url?'<a class="item-comprovante" href="'+d.anexo_url+'" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver comprovante</a>':'';
+  var linhas=lista.map(function(d){
+    var comp=d.anexo_url?'<a href="'+d.anexo_url+'" target="_blank" class="comprovante">ver comprovante</a>':'—';
     return '<tr>'
-      +'<td><span class="item-codigo">'+(d.codigo||'—')+'</span><span class="item-desc">'+d.tipo_despesa+'</span>'+(d.descricao?'<span class="item-meta" style="color:var(--text-light)">'+d.descricao+'</span>':'')+proc+meta+comp+'</td>'
-      +'<td style="white-space:nowrap;color:var(--text-light)">'+fmtData(d.data_despesa)+'</td>'
-      +'<td style="white-space:nowrap;color:var(--text-light)">'+(d.forma_pagamento||'—')+'</td>'
-      +'<td style="text-align:right;font-weight:700;white-space:nowrap">'+fmt(d.valor)+'</td>'
+      +'<td><span style="font-family:monospace;font-size:10px;color:var(--txt3)">'+(d.codigo||'—')+'</span></td>'
+      +'<td>'+d.nome_adv+'</td>'
+      +'<td>'+d.tipo_despesa+'</td>'
+      +'<td>'+D(d.data_despesa)+'</td>'
+      +'<td style="text-align:right;font-weight:700">'+R(d.valor)+'</td>'
+      +'<td>'+comp+'</td>'
       +'</tr>';
   }).join('');
 
-  document.getElementById('mf-preview').innerHTML=
-    '<div class="fatura-doc">'
-    +'<div class="fatura-header">'
-    +'<div class="fatura-header-left">'
-    +'<h2>A&M Associados</h2>'
-    +'<p>ANICETO & MUSQUEIRA ASSOCIADOS</p>'
-    +'</div>'
-    +'<div class="fatura-header-right">'
-    +'<div class="fatura-num">Fatura</div>'
-    +'<div class="fatura-data">'+numFatura+'</div>'
+  document.getElementById('fat-preview').innerHTML=
+    '<div class="fatura-wrap">'
+    +'<div class="fatura-top">'
+    +'<h3>A&M Associados</h3>'
+    +'<p>Aniceto &amp; Musqueira Associados</p>'
+    +'<div class="fatura-meta">'
+    +'<div><label>Cliente</label><span>'+nome+'</span></div>'
+    +'<div><label>Competência</label><span>'+mes+'</span></div>'
+    +'<div><label>Vencimento</label><span>'+faturaAtual.venc+'</span></div>'
     +'</div></div>'
-    +'<div class="fatura-info">'
-    +'<div class="fatura-info-item"><div class="fatura-info-label">Cliente</div><div class="fatura-info-val">'+nome+'</div></div>'
-    +'<div class="fatura-info-item"><div class="fatura-info-label">Competência</div><div class="fatura-info-val">'+mes+'</div></div>'
-    +'<div class="fatura-info-item"><div class="fatura-info-label">Vencimento</div><div class="fatura-info-val">'+venc.toLocaleDateString('pt-BR')+'</div></div>'
-    +'</div>'
-    +'<div class="fatura-items"><table><thead><tr><th>Despesa / Detalhes</th><th>Data</th><th>Pagamento</th><th style="text-align:right">Valor</th></tr></thead><tbody>'+linhas+'</tbody></table></div>'
-    +'<div class="fatura-total-row"><span class="fatura-total-label">Total a reembolsar</span><span class="fatura-total-val">'+fmt(total)+'</span></div>'
-    +'<div class="fatura-footer-strip"><span>A&M Associados · (11) 3294-5994 · anicetoemusqueira.com.br</span><span>'+pagas.length+' despesa(s)</span></div>'
-    +'</div>';
+    +'<div class="fatura-body">'
+    +'<table class="ftable"><thead><tr><th>Código</th><th>Advogado(a)</th><th>Tipo</th><th>Data</th><th style="text-align:right">Valor</th><th>Comprovante</th></tr></thead>'
+    +'<tbody>'+linhas+'</tbody></table>'
+    +'<div class="ftotal"><span class="ftotal-label">Total a reembolsar</span><span class="ftotal-val">'+R(total)+'</span></div>'
+    +'</div></div>';
 
-  document.getElementById('modal-fatura').classList.add('open');
+  openModal('mod-fat');
 }
 
-function gerarPDFDoc(){
+function gerarPDF(){
   var f=faturaAtual;
+  var obs=document.getElementById('fat-obs').value.trim();
   var doc=new window.jspdf.jsPDF();
-  var W=210;
+  var W=210, M=15, CW=W-M*2;
 
-  // Header roxo
+  // Header borgonha
   doc.setFillColor(74,26,74);
-  doc.rect(0,0,W,48,'F');
+  doc.rect(0,0,W,40,'F');
+  doc.setTextColor(255,255,255);
 
   // Logo texto
-  doc.setTextColor(255,255,255);
-  doc.setFontSize(22);
-  doc.setFont('helvetica','bold');
-  doc.text('A&M Associados',15,20);
-  doc.setFontSize(8);
-  doc.setFont('helvetica','normal');
-  doc.setTextColor(220,200,220);
-  doc.text('ANICETO & MUSQUEIRA ASSOCIADOS',15,27);
+  doc.setFontSize(24); doc.setFont('helvetica','bold');
+  doc.text('A&M',M,18);
+  doc.setFontSize(7); doc.setFont('helvetica','normal');
+  doc.setCharSpace(2.5); doc.text('ASSOCIADOS',M,26); doc.setCharSpace(0);
+  doc.setFontSize(7); doc.setTextColor(200,175,205);
+  doc.text('ANICETO & MUSQUEIRA ASSOCIADOS',M,32);
 
-  // Número fatura (direita)
-  doc.setTextColor(255,255,255);
-  doc.setFontSize(8);
-  doc.text('FATURA',W-15,15,{align:'right'});
-  doc.setFontSize(13);
-  doc.setFont('helvetica','bold');
-  doc.text(f.numero,W-15,23,{align:'right'});
+  // Linha divisória vertical
+  doc.setDrawColor(255,255,255); doc.setLineWidth(0.25);
+  doc.line(62,8,62,35);
 
-  // Info bar
-  doc.setFillColor(248,247,245);
-  doc.rect(0,48,W,20,'F');
-  doc.setTextColor(120,100,120);
-  doc.setFontSize(7);
-  doc.setFont('helvetica','bold');
-  doc.text('CLIENTE',15,56);
-  doc.text('COMPETÊNCIA',80,56);
-  doc.text('VENCIMENTO',145,56);
-  doc.setTextColor(26,26,26);
-  doc.setFontSize(9);
-  doc.setFont('helvetica','bold');
-  doc.text(f.cliente.substring(0,35),15,63);
-  doc.text(f.mes,80,63);
-  doc.text(f.vencimento,145,63);
+  // Título FATURA + número
+  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text('FATURA',67,20);
+  var fatNum='FAT-'+String(new Date().getFullYear()).slice(-2)+'-'+String(new Date().getMonth()+1).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(200,175,205);
+  doc.text(fatNum,67,27);
 
-  // Tabela de despesas
-  var rows=f.despesas.map(function(d){
-    return [
-      d.codigo||'—',
-      d.tipo_despesa+(d.descricao?'\n'+d.descricao.substring(0,40):''),
-      d.nome_adv.substring(0,20),
-      d.processo||d.nome_caso||'—',
-      fmtData(d.data_despesa),
-      d.forma_pagamento||'—',
-      fmt(d.valor)
-    ];
+  // Data
+  doc.setFontSize(7.5); doc.setTextColor(200,175,205);
+  doc.text(new Date().toLocaleDateString('pt-BR'),W-M,35,{align:'right'});
+
+  // Dados cliente — três colunas
+  var y=52;
+  [['CLIENTE',f.nome],['COMPETÊNCIA',f.mes],['VENCIMENTO',f.venc]].forEach(function(c,i){
+    var x=M+i*(CW/3);
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(130,130,130);
+    doc.text(c[0],x,y);
+    doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30);
+    var v=c[1].length>30?c[1].substring(0,28)+'…':c[1];
+    doc.text(v,x,y+6);
   });
 
-  doc.autoTable({
-    startY:72,
-    head:[['Código','Tipo / Descrição','Advogado(a)','Processo/Caso','Data','Pagamento','Valor']],
-    body:rows,
-    styles:{fontSize:8,cellPadding:4,font:'helvetica'},
-    headStyles:{fillColor:[74,26,74],textColor:[255,255,255],fontStyle:'bold',fontSize:7,cellPadding:5},
-    columnStyles:{
-      0:{cellWidth:22,fontStyle:'normal',textColor:[150,130,150]},
-      1:{cellWidth:42},
-      2:{cellWidth:30},
-      3:{cellWidth:28},
-      4:{cellWidth:18,halign:'center'},
-      5:{cellWidth:22,halign:'center'},
-      6:{cellWidth:22,halign:'right',fontStyle:'bold'}
-    },
-    alternateRowStyles:{fillColor:[250,249,247]},
-    margin:{left:10,right:10}
-  });
+  y+=16;
+  doc.setDrawColor(220,215,225); doc.setLineWidth(0.25);
+  doc.line(M,y,W-M,y);
+  y+=8;
 
-  var finalY=doc.lastAutoTable.finalY+6;
+  // Cabeçalho tabela
+  doc.setFillColor(248,245,252);
+  doc.rect(M,y-5,CW,8,'F');
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
+  doc.text('CÓDIGO',M+2,y);
+  doc.text('TIPO / DESCRIÇÃO',M+30,y);
+  doc.text('ADVOGADO(A)',M+95,y);
+  doc.text('DATA',M+145,y);
+  doc.text('VALOR',W-M,y,{align:'right'});
+
+  doc.setDrawColor(180,160,190); doc.setLineWidth(0.4);
+  doc.line(M,y+2,W-M,y+2);
+  y+=9;
+
+  // Linhas despesas
+  doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
+  f.lista.forEach(function(d,i){
+    if(y>255){doc.addPage();y=20;}
+    if(i%2===0){doc.setFillColor(252,250,254);doc.rect(M,y-4,CW,8,'F');}
+    doc.setFontSize(7.5);
+    doc.setTextColor(110,90,120); doc.text((d.codigo||'—'),M+2,y);
+    doc.setTextColor(30,30,30);
+    var tipo=d.tipo_despesa.length>30?d.tipo_despesa.substring(0,28)+'…':d.tipo_despesa;
+    doc.text(tipo,M+30,y);
+    var adv=d.nome_adv.length>18?d.nome_adv.substring(0,16)+'…':d.nome_adv;
+    doc.text(adv,M+95,y);
+    doc.text(D(d.data_despesa),M+145,y);
+    doc.setFont('helvetica','bold');
+    doc.text(R(d.valor),W-M,y,{align:'right'});
+    doc.setFont('helvetica','normal');
+    // Comprovante link
+    if(d.anexo_url){
+      doc.setFontSize(6.5); doc.setTextColor(74,26,74);
+      doc.textWithLink('comprovante',M+2,y+5,{url:d.anexo_url});
+      doc.setTextColor(30,30,30);
+      y+=5;
+    }
+    doc.setDrawColor(235,228,242); doc.setLineWidth(0.15);
+    doc.line(M,y+3,W-M,y+3);
+    y+=9;
+  });
 
   // Total
+  y+=3;
   doc.setFillColor(74,26,74);
-  doc.rect(10,finalY,W-20,14,'F');
-  doc.setTextColor(255,255,255);
-  doc.setFontSize(8);
-  doc.setFont('helvetica','bold');
-  doc.text('TOTAL A REEMBOLSAR',15,finalY+9);
-  doc.setFontSize(13);
-  doc.text(fmt(f.total),W-15,finalY+9,{align:'right'});
+  doc.rect(M,y-5,CW,13,'F');
+  doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text('TOTAL A REEMBOLSAR',M+4,y+3);
+  doc.setFontSize(11);
+  doc.text(R(f.total),W-M,y+3,{align:'right'});
 
-  // Comprovantes
-  var temComp=f.despesas.filter(function(d){return d.anexo_url;});
-  if(temComp.length>0){
-    var yc=finalY+22;
-    doc.setTextColor(74,26,74);
-    doc.setFontSize(8);
-    doc.setFont('helvetica','bold');
-    doc.text('COMPROVANTES',15,yc);
-    doc.setFont('helvetica','normal');
-    doc.setTextColor(26,26,26);
-    yc+=6;
-    temComp.forEach(function(d){
-      doc.setFontSize(7);
-      doc.textWithLink('• '+d.codigo+' — '+d.tipo_despesa+' — clique aqui',15,yc,{url:d.anexo_url});
-      doc.setTextColor(24,95,165);
-      yc+=5;
-      doc.setTextColor(26,26,26);
-    });
+  // Dados bancários
+  y+=20;
+  doc.setDrawColor(200,185,210); doc.setLineWidth(0.25);
+  doc.line(M,y-4,W-M,y-4);
+  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
+  doc.text('DADOS PARA PAGAMENTO',M,y);
+  y+=6;
+  doc.setFont('helvetica','normal'); doc.setTextColor(50,50,50); doc.setFontSize(8);
+  doc.text('Banco: 775 - CONTAAZUL IP   |   Agência: 0001   |   Conta: 24956-0',M,y);
+  y+=5.5;
+  doc.text('CNPJ: 41.929.238/0001-83   |   Aniceto & Musqueira Associados',M,y);
+
+  // Observações
+  if(obs){
+    y+=12;
+    doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
+    doc.text('OBSERVAÇÕES',M,y);
+    y+=5;
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(60,60,60);
+    var lines=doc.splitTextToSize(obs,CW);
+    doc.text(lines,M,y);
   }
 
-  // Rodapé
-  doc.setFillColor(248,247,245);
-  doc.rect(0,280,W,17,'F');
-  doc.setTextColor(150,150,150);
-  doc.setFontSize(7);
-  doc.setFont('helvetica','normal');
-  doc.text('A&M Associados  |  (11) 3294-5994  |  anicetoemusqueira.com.br',W/2,288,{align:'center'});
-  doc.text('Documento gerado em '+new Date().toLocaleString('pt-BR'),W/2,293,{align:'center'});
-
+  // Rodapé em todas as páginas
+  var np=doc.internal.getNumberOfPages();
+  for(var i=1;i<=np;i++){
+    doc.setPage(i);
+    doc.setFillColor(245,240,250);
+    doc.rect(0,282,W,15,'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(120,100,130);
+    doc.text('A&M Associados  |  (11) 3294-5994  |  anicetoemusqueira.com.br',W/2,289,{align:'center'});
+    doc.setTextColor(160,155,165);
+    doc.text('Documento gerado em '+new Date().toLocaleString('pt-BR'),W/2,294,{align:'center'});
+  }
   return doc;
 }
 
 function baixarPDF(){
-  if(!faturaAtual)return;
-  var doc=gerarPDFDoc();
-  doc.save('Fatura_'+faturaAtual.cliente.replace(/\s+/g,'_')+'_'+faturaAtual.mes.replace(/\s+/g,'_')+'.pdf');
-  showStatusMsg('✓ PDF baixado! Agora clique em "Enviar por e-mail" e anexe o PDF ao Gmail.','ok');
+  if(!faturaAtual) return;
+  var doc=gerarPDF();
+  var nome='Fatura_'+faturaAtual.nome.replace(/\s+/g,'_')+'_'+faturaAtual.mes.replace(/\s/g,'_')+'.pdf';
+  doc.save(nome);
+  showMsg('PDF baixado! Clique em "Enviar por e-mail" para abrir o Gmail.','ok');
 }
 
 async function enviarEmail(){
-  var email=document.getElementById('fatura-email').value.trim();
-  if(!email){showStatusMsg('Informe o e-mail do cliente.','err');return;}
-  if(!faturaAtual)return;
+  var email=document.getElementById('fat-email').value.trim();
+  if(!email){showMsg('Informe o e-mail do cliente.','err');return;}
   var f=faturaAtual;
-  var linhasEmail=f.despesas.map(function(d){
-    var proc=d.processo?'\n    Processo: '+d.processo:d.nome_caso?'\n    Caso: '+d.nome_caso:'';
-    var comp=d.anexo_url?'\n    Comprovante: '+d.anexo_url:'';
-    return '  • '+d.codigo+' — '+d.tipo_despesa+'\n    '+d.nome_adv+' | '+fmtData(d.data_despesa)+' | '+fmt(d.valor)+proc+comp;
-  }).join('\n\n');
-  var assunto='A&M Associados — Fatura '+f.numero+' — Reembolso de custas — '+f.mes;
-  var corpo='Prezado(a) '+f.cliente+',\n\n'
-    +'Segue o demonstrativo de custas processuais adiantadas pelo escritório A&M Associados em seu nome, '
-    +'referente ao mês de '+f.mes+'.\n\n'
-    +'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'
-    +'FATURA: '+f.numero+'\n'
-    +'VENCIMENTO: '+f.vencimento+'\n'
-    +'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n'
-    +'DESPESAS:\n\n'
-    +linhasEmail+'\n\n'
-    +'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'
-    +'TOTAL A REEMBOLSAR: '+fmt(f.total)+'\n'
-    +'━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n'
-    +'O PDF da fatura está anexado a este e-mail. Os comprovantes de cada despesa '
-    +'estão disponíveis nos links acima.\n\n'
-    +'Em caso de dúvidas, entre em contato:\n'
-    +'(11) 3294-5994 | anicetoemusqueira.com.br\n\n'
-    +'Atenciosamente,\n'
-    +'A&M Associados';
-
-  var gmailUrl='https://mail.google.com/mail/?view=cm'
+  var linhas=f.lista.map(function(d){
+    return '  • '+d.codigo+' | '+d.tipo_despesa+' | '+D(d.data_despesa)+' | '+R(d.valor)+(d.anexo_url?' | comprovante: '+d.anexo_url:'');
+  }).join('\n');
+  var obs=document.getElementById('fat-obs').value.trim();
+  var corpo='Prezado(a) '+f.nome+',\n\n'
+    +'Segue o demonstrativo de reembolso de custas processuais referente a '+f.mes+':\n\n'
+    +linhas+'\n\n'
+    +'TOTAL A REEMBOLSAR: '+R(f.total)+'\n'
+    +'Vencimento: '+f.venc+'\n\n'
+    +'Dados para pagamento:\n'
+    +'Banco: 775 - CONTAAZUL IP | Agência: 0001 | Conta: 24956-0\n'
+    +'CNPJ: 41.929.238/0001-83 | Aniceto & Musqueira Associados\n\n'
+    +(obs?obs+'\n\n':'')
+    +'O PDF da fatura está em anexo.\n\n'
+    +'Atenciosamente,\nA&M Associados\n(11) 3294-5994';
+  var url='https://mail.google.com/mail/?view=cm'
     +'&to='+encodeURIComponent(email)
-    +'&su='+encodeURIComponent(assunto)
+    +'&su='+encodeURIComponent('A&M Associados — Reembolso de custas — '+f.mes)
     +'&body='+encodeURIComponent(corpo);
-
   await sb.from('despesas').update({status:'Enviado'}).in('id',f.ids);
-  window.open(gmailUrl,'_blank');
-  showStatusMsg('✓ Gmail aberto! Lembre de anexar o PDF antes de enviar.','ok');
-  document.getElementById('btn-enviar-email').textContent='✓ Gmail aberto';
-  document.getElementById('btn-enviar-email').disabled=true;
+  window.open(url,'_blank');
+  showMsg('Gmail aberto! Lembre de anexar o PDF antes de enviar.','ok');
+  document.getElementById('btn-email').disabled=true;
+  document.getElementById('btn-email').textContent='✓ Gmail aberto';
   await carregarDados();
 }
 
-function showStatusMsg(msg,tipo){
-  var el=document.getElementById('mf-status');
-  el.textContent=msg;el.className='status-msg show '+tipo;
+function showMsg(t,c){
+  var el=document.getElementById('fat-msg');
+  el.textContent=t; el.className='smsg on '+c;
+}
+function openModal(id){document.getElementById(id).classList.add('on');}
+function closeModal(id){document.getElementById(id).classList.remove('on');}
+document.addEventListener('click',function(e){
+  if(e.target.classList.contains('backdrop')) e.target.classList.remove('on');
+});
+function showTab(t,el){
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+  document.querySelectorAll('.tp').forEach(function(x){x.classList.remove('on');});
+  el.classList.add('on');
+  document.getElementById('tp-'+t).classList.add('on');
 }
 
-function fecharModal(id){document.getElementById(id).classList.remove('open');}
-document.getElementById('modal-detalhe').addEventListener('click',function(e){if(e.target===this)fecharModal('modal-detalhe');});
-document.getElementById('modal-fatura').addEventListener('click',function(e){if(e.target===this)fecharModal('modal-fatura');});
-
-function showTab(tab,el){
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active');
-  document.getElementById('tab-despesas').classList.toggle('active',tab==='despesas');
-  document.getElementById('tab-clientes').classList.toggle('active',tab==='clientes');
-}
-
-document.addEventListener('DOMContentLoaded',async function(){
-  sb=supabase.createClient(
-    'https://davsmeqngkahdniqhmjb.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4'
-  );
-  await carregarDados();
+document.addEventListener('DOMContentLoaded',function(){
+  sb=supabase.createClient(SB_URL,SB_KEY);
+  carregarDados();
   setInterval(carregarDados,30000);
 });
 </script>
