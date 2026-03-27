@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A&M — Clientes</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--plum:#4a1a4a;--plum-dark:#3a1238;--plum-pale:#f0e6f0;--gray-bg:#f0eeea;--gray-light:#e8e8e8;--white:#fff;--text:#1a1a1a;--text-mid:#444;--text-light:#777;--green:#16a34a;--red:#dc2626;--r:6px}
@@ -101,6 +101,7 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 const SB_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
 const sb = supabase.createClient(SB_URL, SB_KEY);
@@ -161,6 +162,14 @@ async function deletar(id) {
 }
 
 carregarClientes();
+
+// Expor funções globais
+window.showAlert = showAlert;
+window.carregarClientes = carregarClientes;
+window.adicionarCliente = adicionarCliente;
+window.importarCSV = importarCSV;
+window.deletar = deletar;
+});
 </script>
 </body>
 </html>
