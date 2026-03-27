@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A&M Associados — Lançamento de Despesas</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--plum:#4a1a4a;--plum-dark:#3a1238;--plum-mid:#5d2460;--plum-pale:#f0e6f0;--gray-bg:#d8d8d8;--gray-light:#e8e8e8;--gray-mid:#b0b0b0;--white:#ffffff;--text:#1a1a1a;--text-mid:#444;--text-light:#777;--green:#16a34a;--amber:#d97706;--red:#dc2626;--r:4px}
@@ -336,7 +336,11 @@ textarea{resize:vertical;min-height:72px}
   <div class="footer-contact"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="086b67667c697c67486966616b6d7c676d657d7b797d6d617a69266b6765266a7a">[email&#160;protected]</a> · (11) 3294-5994</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
+});
+</script><script>
+var sb;
+document.addEventListener("DOMContentLoaded", function() {
 const SUPABASE_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -471,7 +475,8 @@ document.getElementById('form').addEventListener('submit', async function(ev) {
   document.getElementById('success-screen').classList.add('show');
 });
 
-function novoLancamento() {
+});
+window.novoLancamento = function() {
   document.getElementById('success-screen').classList.remove('show');
   document.getElementById('form-body').style.display = 'block';
   document.getElementById('form').reset();
