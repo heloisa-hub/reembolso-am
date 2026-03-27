@@ -429,7 +429,7 @@ textarea{resize:vertical;min-height:72px}
         </div>
 
         <div class="submit-area">
-          <p class="submit-hint">Ao enviar, o financeiro será notificado<br>e o lançamento criado no Conta Azul.</p>
+          <p class="submit-hint">Ao enviar, o financeiro será notificado<br>e o lançamento registrado no sistema.</p>
           <button type="submit" class="btn-submit" id="btn-submit">
             <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             Lançar despesa
@@ -451,51 +451,45 @@ textarea{resize:vertical;min-height:72px}
 
 <div class="footer">
   <div class="footer-brand">A&M Associados</div>
-  <div class="footer-contact"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07646869736673684766696e64627368626a72747672626e75662964686a296575">[email&#160;protected]</a> · (11) 3294-5994</div>
+  <div class="footer-contact">(11) 3294-5994</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const SUPABASE_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
+<script>
+const SB_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
 var sb;
 
 function gerarCodigo() {
   var d = new Date();
-  var aa = String(d.getFullYear()).slice(-2);
-  var mm = String(d.getMonth()+1).padStart(2,'0');
-  return 'DESP-'+aa+'-'+mm+'-'+String(Math.floor(Math.random()*9000)+1000);
+  return 'DESP-'+String(d.getFullYear()).slice(-2)+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(Math.floor(Math.random()*9000)+1000);
 }
 
 function novoLancamento() {
   document.getElementById('success-screen').classList.remove('show');
   document.getElementById('form-body').style.display = 'block';
   document.getElementById('form').reset();
-  ['campo_processo','campo_caso','campo_boleto','campo_pix','info_pend','info_paga'].forEach(function(id) {
+  ['campo_processo','campo_caso','campo_boleto','campo_pix','info_pend','info_paga'].forEach(function(id){
     document.getElementById(id).classList.remove('show');
   });
   document.getElementById('upload-preview').classList.remove('show');
   document.getElementById('upload-tag').textContent = 'Boleto, guia ou comprovante';
-  var btn = document.getElementById('btn-submit');
-  btn.disabled = false;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" style="stroke:white;fill:none;stroke-width:2;width:14px;height:14px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
+  document.getElementById('btn-submit').disabled = false;
+  document.getElementById('btn-submit').textContent = 'Lançar despesa';
   document.getElementById('data_despesa').valueAsDate = new Date();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  sb = supabase.createClient(SB_URL, SB_KEY);
 
-  // Área toggle
   document.querySelectorAll('input[name="area"]').forEach(function(r) {
     r.addEventListener('change', function() {
-      var cp = document.getElementById('campo_processo');
-      var cc = document.getElementById('campo_caso');
-      cp.classList.remove('show'); cc.classList.remove('show');
-      if (this.value === 'Contenciosa') cp.classList.add('show');
-      else cc.classList.add('show');
+      document.getElementById('campo_processo').classList.remove('show');
+      document.getElementById('campo_caso').classList.remove('show');
+      if (this.value === 'Contenciosa') document.getElementById('campo_processo').classList.add('show');
+      else document.getElementById('campo_caso').classList.add('show');
     });
   });
 
-  // Status pagamento
   document.querySelectorAll('input[name="status_pag"]').forEach(function(r) {
     r.addEventListener('change', function() {
       document.getElementById('info_pend').classList.remove('show');
@@ -511,20 +505,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Forma de pagamento
   document.querySelectorAll('input[name="forma_pag"]').forEach(function(r) {
     r.addEventListener('change', function() {
       document.getElementById('campo_boleto').classList.remove('show');
       document.getElementById('campo_pix').classList.remove('show');
-      if (this.value === 'Boleto' || this.value === 'Guia de tributo') {
-        document.getElementById('campo_boleto').classList.add('show');
-      } else if (this.value === 'PIX') {
-        document.getElementById('campo_pix').classList.add('show');
-      }
+      if (this.value === 'Boleto' || this.value === 'Guia de tributo') document.getElementById('campo_boleto').classList.add('show');
+      else if (this.value === 'PIX') document.getElementById('campo_pix').classList.add('show');
     });
   });
 
-  // Upload preview
   document.getElementById('comprovante').addEventListener('change', function() {
     var p = document.getElementById('upload-preview');
     if (this.files && this.files[0]) {
@@ -535,7 +524,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('data_despesa').valueAsDate = new Date();
 
-  // Submit
   document.getElementById('form').addEventListener('submit', async function(ev) {
     ev.preventDefault();
     var ok = true;
@@ -564,22 +552,38 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('loading-bar').classList.add('show');
 
     var codigo = gerarCodigo();
-
-    // Upload comprovante
     var anexo_url = null;
     var arquivo = document.getElementById('comprovante').files[0];
+
     if (arquivo) {
-      var ext = arquivo.name.split('.').pop();
-      var path = codigo + '/' + Date.now() + '.' + ext;
-      var upResult = await sb.storage.from('comprovantes').upload(path, arquivo);
-      if (upResult.error) {
+      if (arquivo.size > 8 * 1024 * 1024) {
+        alert('Arquivo muito grande. Máximo 8MB.');
         btn.disabled = false; btn.textContent = 'Lançar despesa';
         document.getElementById('loading-bar').classList.remove('show');
-        alert('Erro no anexo: ' + upResult.error.message); return;
+        return;
+      }
+      btn.textContent = 'Enviando anexo...';
+      var ext = arquivo.name.split('.').pop().toLowerCase();
+      var path = codigo + '_' + Date.now() + '.' + ext;
+      try {
+        var upResult = await sb.storage.from('comprovantes').upload(path, arquivo, {
+          cacheControl: '3600',
+          upsert: false
+        });
+        if (upResult.error) {
+          console.warn('Upload falhou:', upResult.error.message);
+          // Continua sem anexo mas avisa
+        } else {
+          // Montar URL pública manualmente — mais confiável
+          anexo_url = 'https://davsmeqngkahdniqhmjb.supabase.co/storage/v1/object/public/comprovantes/' + path;
+        }
+      } catch(e) {
+        console.warn('Erro no upload:', e);
       }
     }
 
-    var dados = {
+    btn.textContent = 'Salvando...';
+    var result = await sb.from('despesas').insert([{
       codigo: codigo,
       nome_adv: document.getElementById('nome_adv').value.trim(),
       area_direito: document.getElementById('area_direito').value,
@@ -597,9 +601,8 @@ document.addEventListener('DOMContentLoaded', function() {
       chave_pix: document.getElementById('chave_pix').value.trim() || null,
       status: status.value === 'Pendente' ? 'Pendente' : 'Pago',
       anexo_url: anexo_url
-    };
+    }]);
 
-    var result = await sb.from('despesas').insert([dados]);
     document.getElementById('loading-bar').classList.remove('show');
 
     if (result.error) {
@@ -614,7 +617,7 @@ document.addEventListener('DOMContentLoaded', function() {
       : 'Comprovante registrado. Incluído no reembolso mensal do cliente.';
     document.getElementById('success-screen').classList.add('show');
   });
-}); // DOMContentLoaded
+});
 </script>
 // ── Área: contencioso / consultivo ──
 document.querySelectorAll('input[name="area"]').forEach(function(radio) {
