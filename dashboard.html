@@ -456,140 +456,146 @@ function abrirFatura(enc){
 function gerarPDF(){
   var f=faturaAtual;
   var obs=document.getElementById('fat-obs').value.trim();
-  var doc=new window.jspdf.jsPDF();
-  var W=210, M=15, CW=W-M*2;
+  var doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});
+  var W=210,M=20,CW=W-M*2;
 
-  // Header borgonha
-  doc.setFillColor(74,26,74);
-  doc.rect(0,0,W,40,'F');
-  doc.setTextColor(255,255,255);
+  // ── FUNDO GRADIENTE (simulado com retângulo claro) ───
+  doc.setFillColor(235,238,238);
+  doc.rect(0,0,W,297,'F');
+  // Faixa mais clara no topo
+  doc.setFillColor(240,243,243);
+  doc.rect(0,0,W,120,'F');
 
-  // Logo texto
-  doc.setFontSize(24); doc.setFont('helvetica','bold');
-  doc.text('A&M',M,18);
-  doc.setFontSize(7); doc.setFont('helvetica','normal');
-  doc.setCharSpace(2.5); doc.text('ASSOCIADOS',M,26); doc.setCharSpace(0);
-  doc.setFontSize(7); doc.setTextColor(200,175,205);
-  doc.text('ANICETO & MUSQUEIRA ASSOCIADOS',M,32);
+  // ── LOGO A&M (topo esquerdo) ─────────────────────────
+  doc.setTextColor(74,26,74);
+  doc.setFontSize(34); doc.setFont('helvetica','bold');
+  doc.text('A&M',M,28);
+  doc.setFontSize(8); doc.setFont('helvetica','normal');
+  doc.setCharSpace(3);
+  doc.text('ASSOCIADOS',M,36);
+  doc.setCharSpace(0);
 
-  // Linha divisória vertical
-  doc.setDrawColor(255,255,255); doc.setLineWidth(0.25);
-  doc.line(62,8,62,35);
+  // ── TÍTULO (centro-direita) ───────────────────────────
+  doc.setFontSize(14); doc.setFont('helvetica','bold');
+  doc.setTextColor(74,26,74);
+  doc.text('FATURA DE REEMBOLSOS',W-M,28,{align:'right'});
+  // Linha sob o título
+  doc.setDrawColor(74,26,74); doc.setLineWidth(0.5);
+  doc.line(W-M-75,31,W-M,31);
 
-  // Título FATURA + número
-  doc.setFontSize(13); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
-  doc.text('FATURA',67,20);
+  // ── ISSUED TO + INVOICE INFO ─────────────────────────
+  var y=50;
+  // Coluna esquerda
+  doc.setFontSize(8); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
+  doc.text('ISSUED TO:',M,y);
+  y+=5;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(60,60,60);
+  var nomeLines=doc.splitTextToSize(f.nome,70);
+  doc.text(nomeLines,M,y);
+  y+=nomeLines.length*5+2;
+  doc.setFontSize(8.5); doc.setTextColor(80,80,80);
+  doc.text('Referência: '+f.mes,M,y);
+
+  // Coluna direita
+  var xR=W-M;
+  doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(74,26,74);
+  doc.text('INVOICE NO:',W/2+5,50);
   var fatNum='FAT-'+String(new Date().getFullYear()).slice(-2)+'-'+String(new Date().getMonth()+1).padStart(2,'0')+'-'+String(Math.floor(Math.random()*900)+100);
-  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(200,175,205);
-  doc.text(fatNum,67,27);
+  doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
+  doc.text(fatNum,xR,50,{align:'right'});
+  doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(80,80,80);
+  doc.text('DATE: '+new Date().toLocaleDateString('pt-BR'),xR,58,{align:'right'});
+  doc.text('DUE DATE: '+f.venc,xR,65,{align:'right'});
 
-  // Data
-  doc.setFontSize(7.5); doc.setTextColor(200,175,205);
-  doc.text(new Date().toLocaleDateString('pt-BR'),W-M,35,{align:'right'});
+  // ── PAY TO ───────────────────────────────────────────
+  y+=12;
+  doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(74,26,74);
+  doc.text('PAY TO:',M,y);
+  y+=5;
+  doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(60,60,60);
+  doc.text('Banco: 775 - CONTAAZUL IP',M,y); y+=5;
+  doc.text('Agência: 0001  |  Conta: 24956-0',M,y); y+=5;
+  doc.text('CNPJ: 41.929.238/0001-83',M,y); y+=5;
+  doc.text('Aniceto & Musqueira Associados',M,y);
 
-  // Dados cliente — três colunas
-  var y=52;
-  [['CLIENTE',f.nome],['COMPETÊNCIA',f.mes],['VENCIMENTO',f.venc]].forEach(function(c,i){
-    var x=M+i*(CW/3);
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(130,130,130);
-    doc.text(c[0],x,y);
-    doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30);
-    var v=c[1].length>30?c[1].substring(0,28)+'…':c[1];
-    doc.text(v,x,y+6);
-  });
-
+  // ── TABELA ───────────────────────────────────────────
   y+=16;
-  doc.setDrawColor(220,215,225); doc.setLineWidth(0.25);
-  doc.line(M,y,W-M,y);
+  // Cabeçalho
+  doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(74,26,74);
+  doc.text('DESCRIPTION',M,y);
+  doc.text('ADVOGADO(A)',M+85,y);
+  doc.text('DATA',M+130,y);
+  doc.text('TOTAL',xR,y,{align:'right'});
+  // Linha
+  doc.setDrawColor(180,160,190); doc.setLineWidth(0.5);
+  doc.line(M,y+2,W-M,y+2);
   y+=8;
 
-  // Cabeçalho tabela
-  doc.setFillColor(248,245,252);
-  doc.rect(M,y-5,CW,8,'F');
-  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
-  doc.text('CÓDIGO',M+2,y);
-  doc.text('TIPO / DESCRIÇÃO',M+30,y);
-  doc.text('ADVOGADO(A)',M+95,y);
-  doc.text('DATA',M+145,y);
-  doc.text('VALOR',W-M,y,{align:'right'});
-
-  doc.setDrawColor(180,160,190); doc.setLineWidth(0.4);
-  doc.line(M,y+2,W-M,y+2);
-  y+=9;
-
-  // Linhas despesas
-  doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40);
+  // Linhas de despesas
+  doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60); doc.setFontSize(8.5);
   f.lista.forEach(function(d,i){
-    if(y>255){doc.addPage();y=20;}
-    if(i%2===0){doc.setFillColor(252,250,254);doc.rect(M,y-4,CW,8,'F');}
-    doc.setFontSize(7.5);
-    doc.setTextColor(110,90,120); doc.text((d.codigo||'—'),M+2,y);
-    doc.setTextColor(30,30,30);
-    var tipo=d.tipo_despesa.length>30?d.tipo_despesa.substring(0,28)+'…':d.tipo_despesa;
-    doc.text(tipo,M+30,y);
-    var adv=d.nome_adv.length>18?d.nome_adv.substring(0,16)+'…':d.nome_adv;
-    doc.text(adv,M+95,y);
-    doc.text(D(d.data_despesa),M+145,y);
-    doc.setFont('helvetica','bold');
-    doc.text(R(d.valor),W-M,y,{align:'right'});
-    doc.setFont('helvetica','normal');
-    // Comprovante link
-    if(d.anexo_url){
-      doc.setFontSize(6.5); doc.setTextColor(74,26,74);
-      doc.textWithLink('comprovante',M+2,y+5,{url:d.anexo_url});
-      doc.setTextColor(30,30,30);
-      y+=5;
+    if(y>250){doc.addPage();
+      doc.setFillColor(235,238,238); doc.rect(0,0,W,297,'F');
+      doc.setFillColor(240,243,243); doc.rect(0,0,W,30,'F');
+      y=20;
     }
-    doc.setDrawColor(235,228,242); doc.setLineWidth(0.15);
-    doc.line(M,y+3,W-M,y+3);
-    y+=9;
+    var tipo=d.tipo_despesa.length>38?d.tipo_despesa.substring(0,36)+'…':d.tipo_despesa;
+    doc.setFont('helvetica','normal'); doc.setTextColor(60,60,60);
+    doc.text(tipo,M,y);
+    var adv=d.nome_adv.length>18?d.nome_adv.substring(0,16)+'…':d.nome_adv;
+    doc.text(adv,M+85,y);
+    doc.text(D(d.data_despesa),M+130,y);
+    doc.setFont('helvetica','normal');
+    doc.text(R(d.valor),xR,y,{align:'right'});
+
+    // Código e comprovante em linha menor abaixo
+    doc.setFontSize(7); doc.setTextColor(120,100,130);
+    var info=d.codigo||'';
+    if(d.anexo_url){
+      doc.text(info,M,y+4);
+      doc.setTextColor(74,26,74);
+      doc.textWithLink('ver comprovante →',M+(info?doc.getTextWidth(info)+3:0),y+4,{url:d.anexo_url});
+    } else {
+      doc.text(info,M,y+4);
+    }
+    doc.setFontSize(8.5); doc.setTextColor(60,60,60);
+
+    doc.setDrawColor(200,190,210); doc.setLineWidth(0.15);
+    doc.line(M,y+7,W-M,y+7);
+    y+=13;
   });
 
-  // Total
+  // ── SUBTOTAL / TOTAL ─────────────────────────────────
   y+=3;
-  doc.setFillColor(74,26,74);
-  doc.rect(M,y-5,CW,13,'F');
-  doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
-  doc.text('TOTAL A REEMBOLSAR',M+4,y+3);
-  doc.setFontSize(11);
-  doc.text(R(f.total),W-M,y+3,{align:'right'});
+  doc.setDrawColor(180,160,190); doc.setLineWidth(0.4);
+  doc.line(M,y,W-M,y); y+=5;
+  doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(74,26,74);
+  doc.text('TOTAL A REEMBOLSAR',M,y);
+  doc.setFontSize(12);
+  doc.text(R(f.total),xR,y,{align:'right'});
 
-  // Dados bancários
-  y+=20;
-  doc.setDrawColor(200,185,210); doc.setLineWidth(0.25);
-  doc.line(M,y-4,W-M,y-4);
-  doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
-  doc.text('DADOS PARA PAGAMENTO',M,y);
-  y+=6;
-  doc.setFont('helvetica','normal'); doc.setTextColor(50,50,50); doc.setFontSize(8);
-  doc.text('Banco: 775 - CONTAAZUL IP   |   Agência: 0001   |   Conta: 24956-0',M,y);
-  y+=5.5;
-  doc.text('CNPJ: 41.929.238/0001-83   |   Aniceto & Musqueira Associados',M,y);
-
-  // Observações
+  // ── OBSERVAÇÕES ──────────────────────────────────────
   if(obs){
     y+=12;
-    doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
-    doc.text('OBSERVAÇÕES',M,y);
-    y+=5;
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(60,60,60);
-    var lines=doc.splitTextToSize(obs,CW);
-    doc.text(lines,M,y);
+    doc.setFontSize(7.5); doc.setFont('helvetica','bold'); doc.setTextColor(74,26,74);
+    doc.text('OBSERVAÇÕES',M,y); y+=5;
+    doc.setFont('helvetica','normal'); doc.setTextColor(70,70,70);
+    var ol=doc.splitTextToSize(obs,CW);
+    doc.text(ol,M,y);
   }
 
-  // Rodapé em todas as páginas
+  // ── RODAPÉ ───────────────────────────────────────────
   var np=doc.internal.getNumberOfPages();
   for(var i=1;i<=np;i++){
     doc.setPage(i);
-    doc.setFillColor(245,240,250);
-    doc.rect(0,282,W,15,'F');
-    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(120,100,130);
-    doc.text('A&M Associados  |  (11) 3294-5994  |  anicetoemusqueira.com.br',W/2,289,{align:'center'});
-    doc.setTextColor(160,155,165);
-    doc.text('Documento gerado em '+new Date().toLocaleString('pt-BR'),W/2,294,{align:'center'});
+    doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(130,110,140);
+    doc.text('A&M Associados  |  (11) 3294-5994  |  anicetoemusqueira.com.br',W/2,287,{align:'center'});
+    doc.setTextColor(160,150,165);
+    doc.text('Gerado em '+new Date().toLocaleString('pt-BR'),W/2,292,{align:'center'});
   }
   return doc;
 }
+
 
 function baixarPDF(){
   if(!faturaAtual) return;
