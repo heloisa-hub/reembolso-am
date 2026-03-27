@@ -18,7 +18,12 @@ body{font-family:'Open Sans',sans-serif;background:var(--gray-bg);color:var(--te
 .btn-top{background:rgba(255,255,255,.15);border:none;color:white;padding:.5rem 1rem;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
 .btn-top:hover{background:rgba(255,255,255,.25)}
 .btn-top.white{background:var(--white);color:var(--plum)}
+.btn-top.green{background:#16a34a;color:white}
+.btn-top.green:hover{background:#15803d}
 .btn-top svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.ca-status{font-size:11px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:.375rem}
+.ca-dot{width:7px;height:7px;border-radius:50%;background:#6b7280}
+.ca-dot.connected{background:#4ade80}
 .main{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
 .metric{background:var(--white);border-radius:var(--r);padding:1.25rem;border-left:3px solid transparent}
@@ -47,47 +52,39 @@ tr:hover td{background:#fafaf8}
 .btn-action{padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;border:1px solid transparent;transition:all .1s}
 .btn-pagar{background:#fef3c7;color:#92400e;border-color:#fcd34d}.btn-pagar:hover{background:var(--amber);color:white;border-color:var(--amber)}
 .btn-faturar{background:#dcfce7;color:#14532d;border-color:#86efac}.btn-faturar:hover{background:var(--green);color:white;border-color:var(--green)}
-.btn-ver{background:var(--gray-light);color:var(--text-mid);border-color:var(--gray-light)}.btn-ver:hover{background:#d1d1d1}
+.btn-ver{background:var(--gray-light);color:var(--text-mid)}.btn-ver:hover{background:#d1d1d1}
 .clientes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;padding:1rem}
 .cliente-card{background:#f8f7f5;border-radius:var(--r);padding:1rem;border:1px solid var(--gray-light)}
 .cc-nome{font-weight:700;font-size:13px;margin-bottom:2px}
 .cc-email{font-size:11px;color:var(--text-light);margin-bottom:.75rem}
 .cc-total{font-size:20px;font-weight:800;color:var(--plum);margin-bottom:2px}
 .cc-sub{font-size:11px;color:var(--text-light)}
-.cc-actions{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--gray-light);display:flex;gap:.5rem}
-.btn-fechar{background:var(--plum);color:white;border:none;padding:.5rem 1rem;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;flex:1}
+.cc-actions{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--gray-light)}
+.btn-fechar{background:var(--plum);color:white;border:none;padding:.5rem 1rem;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;width:100%}
 .btn-fechar:hover{background:var(--plum-dark)}
 .btn-fechar:disabled{opacity:.5;cursor:not-allowed}
 .sem-email{background:#fef3c7;color:#92400e;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700}
-.tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-light);padding:0 1.25rem}
+.tabs{display:flex;border-bottom:2px solid var(--gray-light);padding:0 1.25rem}
 .tab{padding:.75rem 1rem;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
 .tab.active{color:var(--plum);border-bottom-color:var(--plum)}
 .tab-panel{display:none}.tab-panel.active{display:block}
 .empty{padding:3rem;text-align:center;color:var(--text-light);font-size:13px}
 .loading{padding:2rem;text-align:center;color:var(--text-light);font-size:13px}
-
-/* MODAL */
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center}
 .modal-backdrop.open{display:flex}
-.modal{background:var(--white);border-radius:8px;padding:1.5rem;width:520px;max-width:92vw;max-height:88vh;overflow-y:auto}
+.modal{background:var(--white);border-radius:8px;padding:1.5rem;width:540px;max-width:92vw;max-height:88vh;overflow-y:auto}
 .modal-title{font-size:14px;font-weight:700;color:var(--plum);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--gray-light)}
 .modal-row{display:flex;padding:.5rem 0;border-bottom:1px solid #f0eeea;font-size:12px}
 .modal-row:last-of-type{border:none}
 .modal-key{color:var(--text-light);width:150px;flex-shrink:0;font-weight:600}
-.modal-val{color:var(--text)}
-.modal-section{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);margin:1rem 0 .5rem;padding-top:1rem;border-top:1px solid var(--gray-light)}
 .modal-actions{display:flex;gap:.5rem;margin-top:1rem;justify-content:flex-end}
 .btn-mc{border:none;padding:.625rem 1.25rem;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer}
 .btn-mc.close{background:var(--gray-light);color:var(--text-mid)}
-.btn-mc.primary{background:var(--plum);color:white}
-.btn-mc.primary:hover{background:var(--plum-dark)}
-.btn-mc.success{background:var(--green);color:white}
+.btn-mc.primary{background:var(--plum);color:white}.btn-mc.primary:hover{background:var(--plum-dark)}
 .btn-mc:disabled{opacity:.5;cursor:not-allowed}
-
-/* FATURA MODAL */
-.fatura-header{background:var(--plum);color:white;padding:1.5rem;border-radius:var(--r);margin-bottom:1rem}
-.fatura-header h3{font-size:16px;font-weight:800;margin-bottom:4px}
-.fatura-header p{font-size:12px;opacity:.7}
+.fatura-header{background:var(--plum);color:white;padding:1.25rem;border-radius:var(--r);margin-bottom:1rem}
+.fatura-header h3{font-size:15px;font-weight:800;margin-bottom:3px}
+.fatura-header p{font-size:11px;opacity:.7}
 .fatura-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:1rem}
 .fatura-table th{padding:6px 10px;background:#f8f7f5;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);border-bottom:1px solid var(--gray-light);text-align:left}
 .fatura-table td{padding:8px 10px;border-bottom:1px solid #f0eeea}
@@ -95,33 +92,43 @@ tr:hover td{background:#fafaf8}
 .fatura-total{background:var(--plum-pale);border-radius:var(--r);padding:1rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
 .fatura-total-label{font-size:12px;font-weight:700;color:var(--plum)}
 .fatura-total-val{font-size:20px;font-weight:800;color:var(--plum)}
-.input-email{width:100%;padding:.625rem .875rem;border:1.5px solid var(--gray-light);border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:13px;color:var(--text);margin-top:.5rem}
-.input-email:focus{outline:none;border-color:var(--plum)}
-.ca-token-area{background:#f8f7f5;border-radius:var(--r);padding:1rem;margin:1rem 0}
-.ca-token-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:.5rem}
+.field-group{margin-bottom:.875rem}
+.field-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:.375rem;display:block}
+.field-input{width:100%;padding:.625rem .875rem;border:1.5px solid var(--gray-light);border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:13px;color:var(--text)}
+.field-input:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(74,26,74,.08)}
 .status-msg{padding:.75rem 1rem;border-radius:var(--r);font-size:12px;margin-top:.75rem;display:none}
 .status-msg.show{display:block}
 .status-msg.ok{background:#dcfce7;color:#14532d;border:1px solid #86efac}
 .status-msg.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
 .status-msg.info{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc}
-
+/* CA Connect banner */
+.ca-banner{background:#fff7ed;border:1px solid #fed7aa;border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.ca-banner.connected{background:#f0fdf4;border-color:#86efac}
+.ca-banner-text{font-size:12px;color:#92400e}
+.ca-banner.connected .ca-banner-text{color:#14532d}
+.ca-banner-text strong{display:block;font-size:13px;margin-bottom:2px}
+.btn-ca-connect{background:#f97316;color:white;border:none;padding:.5rem 1.25rem;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.btn-ca-connect:hover{background:#ea6c0a}
+.btn-ca-connect.connected{background:var(--green)}
 @media(max-width:768px){.metrics{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div class="topbar-left">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" style="height:28px;width:auto">
       <defs><style>.lc{fill:#fff}</style></defs>
-      <g><path class="lc" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
-      <path class="lc" d="M55.0,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23h-2.70V13.63Z"/>
-      <path class="lc" d="M45.0,27.26l-2.39,1.43c.01.02.64,1.06.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/></g>
+      <g>
+        <path class="lc" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
+        <path class="lc" d="M55.0,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23h-2.70V13.63Z"/>
+        <path class="lc" d="M45.0,27.26l-2.39,1.43c.01.02.64,1.06.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/>
+      </g>
     </svg>
     <div class="topbar-divider"></div>
     <div class="topbar-title">Dashboard Financeiro</div>
   </div>
   <div class="topbar-right">
+    <div class="ca-status"><span class="ca-dot" id="ca-dot"></span><span id="ca-status-text">Conta Azul desconectado</span></div>
     <button class="btn-top" onclick="carregarDados()">
       <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
       Atualizar
@@ -132,11 +139,20 @@ tr:hover td{background:#fafaf8}
 </div>
 
 <div class="main">
+  <!-- Banner Conta Azul -->
+  <div class="ca-banner" id="ca-banner">
+    <div class="ca-banner-text">
+      <strong>Conta Azul não conectado</strong>
+      Conecte para gerar cobranças e boletos automaticamente ao fechar faturas.
+    </div>
+    <button class="btn-ca-connect" id="btn-ca-connect" onclick="conectarCA()">Conectar Conta Azul</button>
+  </div>
+
   <div class="metrics">
     <div class="metric total"><div class="metric-label">Total geral</div><div class="metric-val plum" id="m-total">R$ 0,00</div><div class="metric-sub" id="m-total-qtd">0 despesas</div></div>
     <div class="metric pendente"><div class="metric-label">Pendente de pagamento</div><div class="metric-val amber" id="m-pendente">R$ 0,00</div><div class="metric-sub" id="m-pendente-qtd">0 despesas</div></div>
     <div class="metric pago"><div class="metric-label">Pago — aguardando fatura</div><div class="metric-val green" id="m-pago">R$ 0,00</div><div class="metric-sub" id="m-pago-qtd">0 despesas</div></div>
-    <div class="metric faturado"><div class="metric-label">Já faturado</div><div class="metric-val blue" id="m-faturado">R$ 0,00</div><div class="metric-sub" id="m-faturado-qtd">0 despesas</div></div>
+    <div class="metric faturado"><div class="metric-label">Já faturado/enviado</div><div class="metric-val blue" id="m-faturado">R$ 0,00</div><div class="metric-sub" id="m-faturado-qtd">0 despesas</div></div>
   </div>
 
   <div class="panel">
@@ -145,7 +161,6 @@ tr:hover td{background:#fafaf8}
       <div class="tab" onclick="showTab('clientes',this)">Fechar faturas</div>
     </div>
 
-    <!-- TAB DESPESAS -->
     <div id="tab-despesas" class="tab-panel active">
       <div class="panel-head">
         <div class="panel-title">Despesas lançadas</div>
@@ -181,7 +196,6 @@ tr:hover td{background:#fafaf8}
       </div>
     </div>
 
-    <!-- TAB FECHAR FATURAS -->
     <div id="tab-clientes" class="tab-panel">
       <div class="panel-head">
         <div class="panel-title">Clientes com despesas pagas — prontos para faturar</div>
@@ -216,22 +230,21 @@ tr:hover td{background:#fafaf8}
     <div class="status-msg" id="mf-status"></div>
     <div class="modal-actions" id="mf-actions">
       <button class="btn-mc close" onclick="fecharModal('modal-fatura')">Cancelar</button>
-      <button class="btn-mc primary" id="btn-mf-gerar" onclick="gerarFaturaCA()">
-        Gerar cobrança no CA e enviar e-mail
-      </button>
+      <button class="btn-mc primary" id="btn-mf-gerar" onclick="gerarFaturaCA()">Gerar cobrança e enviar e-mail</button>
     </div>
   </div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
 const SB_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
 const CA_URL = 'https://api-v2.contaazul.com/v1';
-const sb = supabase.createClient(SB_URL, SB_KEY);
+const CA_CLIENT_ID = 'eon6efn1po7muainedppk7c9a';
+const CA_CLIENT_SECRET = '1s1pjtuv3efq8oos1738ai8dhbd8nghlkk6icq69ggn0i9kelr8';
+const CA_REDIRECT = 'https://project-0tpdj.vercel.app/dashboard.html';
+var sb;
 
-var todasDespesas = [], todosClientes = {};
-var faturaAtual = null;
+var todasDespesas = [], todosClientes = {}, faturaAtual = null, caAccessToken = null;
 
 function fmt(v){ return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function fmtData(d){ if(!d) return '—'; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
@@ -240,23 +253,120 @@ function badgeStatus(s){
   return '<span class="badge '+(m[s]||'b-pendente')+'"><span class="dot"></span> '+s+'</span>';
 }
 
-async function carregarDados(){
-  document.getElementById('loading').style.display='block';
-  document.getElementById('empty').style.display='none';
-  document.getElementById('tbody').innerHTML='';
+// ── Conta Azul OAuth ──
+function conectarCA() {
+  var url = 'https://auth.contaazul.com/login?response_type=code'
+    + '&client_id=' + CA_CLIENT_ID
+    + '&redirect_uri=' + encodeURIComponent(CA_REDIRECT)
+    + '&state=dashboard&scope=openid+profile+aws.cognito.signin.user.admin';
+  window.location.href = url;
+}
+
+async function trocarCodePorToken(code) {
+  var basic = btoa(CA_CLIENT_ID + ':' + CA_CLIENT_SECRET);
+  try {
+    var resp = await fetch('https://auth.contaazul.com/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + basic
+      },
+      body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=' + encodeURIComponent(CA_REDIRECT)
+    });
+    var data = await resp.json();
+    if (data.access_token) {
+      caAccessToken = data.access_token;
+      // Salvar refresh token no Supabase
+      if (data.refresh_token) {
+        await sb.from('configuracoes').upsert([{ chave: 'ca_refresh_token', valor: data.refresh_token }]);
+      }
+      await sb.from('configuracoes').upsert([{ chave: 'ca_access_token', valor: data.access_token }]);
+      atualizarStatusCA(true);
+      return true;
+    }
+  } catch(e) {
+    console.error('Erro OAuth CA:', e);
+  }
+  return false;
+}
+
+async function renovarTokenCA() {
+  var { data: cfg } = await sb.from('configuracoes').select('valor').eq('chave','ca_refresh_token').single();
+  if (!cfg) return false;
+  var basic = btoa(CA_CLIENT_ID + ':' + CA_CLIENT_SECRET);
+  try {
+    var resp = await fetch('https://auth.contaazul.com/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + basic
+      },
+      body: 'grant_type=refresh_token&refresh_token=' + cfg.valor
+    });
+    var data = await resp.json();
+    if (data.access_token) {
+      caAccessToken = data.access_token;
+      await sb.from('configuracoes').upsert([{ chave: 'ca_access_token', valor: data.access_token }]);
+      if (data.refresh_token) {
+        await sb.from('configuracoes').upsert([{ chave: 'ca_refresh_token', valor: data.refresh_token }]);
+      }
+      atualizarStatusCA(true);
+      return true;
+    }
+  } catch(e) {
+    console.error('Erro ao renovar token:', e);
+  }
+  return false;
+}
+
+async function carregarTokenCA() {
+  // Verificar se tem refresh token salvo
+  var { data: cfg } = await sb.from('configuracoes').select('valor').eq('chave','ca_refresh_token').single();
+  if (cfg) {
+    await renovarTokenCA();
+  } else {
+    atualizarStatusCA(false);
+  }
+}
+
+function atualizarStatusCA(conectado) {
+  var dot = document.getElementById('ca-dot');
+  var txt = document.getElementById('ca-status-text');
+  var banner = document.getElementById('ca-banner');
+  var btnConnect = document.getElementById('btn-ca-connect');
+  if (conectado) {
+    dot.classList.add('connected');
+    txt.textContent = 'Conta Azul conectado';
+    banner.classList.add('connected');
+    banner.querySelector('.ca-banner-text strong').textContent = 'Conta Azul conectado';
+    banner.querySelector('.ca-banner-text').lastChild.textContent = ' Cobranças serão geradas automaticamente ao fechar faturas.';
+    btnConnect.textContent = 'Reconectar';
+    btnConnect.classList.add('connected');
+  } else {
+    dot.classList.remove('connected');
+    txt.textContent = 'Conta Azul desconectado';
+    banner.classList.remove('connected');
+  }
+}
+
+// ── Dados ──
+async function carregarDados() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('empty').style.display = 'none';
+  document.getElementById('tbody').innerHTML = '';
   var {data:desp} = await sb.from('despesas').select('*').order('criado_em',{ascending:false});
   var {data:cli} = await sb.from('clientes').select('*');
   todasDespesas = desp||[];
   todosClientes = {};
   (cli||[]).forEach(function(c){ todosClientes[c.nome.trim().toLowerCase()] = c; });
-  document.getElementById('loading').style.display='none';
+  document.getElementById('loading').style.display = 'none';
   atualizarMetricas();
   renderTabela();
   renderClientes();
   popularFiltroMes();
 }
 
-function atualizarMetricas(){
+function atualizarMetricas() {
   var total=0,pV=0,pQ=0,pgV=0,pgQ=0,fV=0,fQ=0;
   todasDespesas.forEach(function(d){
     total+=Number(d.valor);
@@ -274,7 +384,7 @@ function atualizarMetricas(){
   document.getElementById('m-faturado-qtd').textContent=fQ+' despesas';
 }
 
-function renderTabela(){
+function renderTabela() {
   var busca=document.getElementById('f-busca').value.toLowerCase();
   var fS=document.getElementById('f-status').value;
   var fA=document.getElementById('f-area').value;
@@ -306,7 +416,7 @@ function renderTabela(){
   }).join('');
 }
 
-function renderClientes(){
+function renderClientes() {
   var fMes=document.getElementById('f-mes').value;
   var pagas=todasDespesas.filter(function(d){
     if(d.status!=='Pago') return false;
@@ -315,12 +425,11 @@ function renderClientes(){
   });
   var porCliente={};
   pagas.forEach(function(d){
-    var k=d.cliente;
-    if(!porCliente[k]) porCliente[k]={total:0,qtd:0,ids:[],despesas:[]};
-    porCliente[k].total+=Number(d.valor);
-    porCliente[k].qtd++;
-    porCliente[k].ids.push(d.id);
-    porCliente[k].despesas.push(d);
+    if(!porCliente[d.cliente]) porCliente[d.cliente]={total:0,qtd:0,ids:[],despesas:[]};
+    porCliente[d.cliente].total+=Number(d.valor);
+    porCliente[d.cliente].qtd++;
+    porCliente[d.cliente].ids.push(d.id);
+    porCliente[d.cliente].despesas.push(d);
   });
   var grid=document.getElementById('clientes-grid');
   var entries=Object.entries(porCliente);
@@ -339,7 +448,7 @@ function renderClientes(){
   }).join('');
 }
 
-function popularFiltroMes(){
+function popularFiltroMes() {
   var meses={};
   todasDespesas.forEach(function(d){if(d.data_despesa) meses[d.data_despesa.slice(0,7)]=true;});
   var sel=document.getElementById('f-mes');
@@ -349,13 +458,13 @@ function popularFiltroMes(){
   sel.innerHTML='<option value="">Todos os meses</option>'+opts.join('');
 }
 
-async function atualizarStatus(id,novoStatus){
+async function atualizarStatus(id,novoStatus) {
   var {error}=await sb.from('despesas').update({status:novoStatus}).eq('id',id);
   if(error){alert('Erro: '+error.message);return;}
   await carregarDados();
 }
 
-function verDetalhe(id){
+function verDetalhe(id) {
   var d=todasDespesas.find(function(x){return x.id===id;});
   if(!d) return;
   document.getElementById('md-title').textContent=d.codigo||'Detalhes';
@@ -366,9 +475,8 @@ function verDetalhe(id){
     ['Tipo',d.tipo_despesa],['Data',fmtData(d.data_despesa)],
     ['Valor',fmt(d.valor)],['Descrição',d.descricao||'—'],
     ['Forma pgto',d.forma_pagamento||'—'],['Status',d.status],
-    ['CA Bill ID',d.ca_bill_id||'—'],
     ['Lançado em',d.criado_em?new Date(d.criado_em).toLocaleString('pt-BR'):'—'],
-  ].map(function(r){return '<div class="modal-row"><div class="modal-key">'+r[0]+'</div><div class="modal-val">'+r[1]+'</div></div>';}).join('');
+  ].map(function(r){return '<div class="modal-row"><div class="modal-key">'+r[0]+'</div><div style="font-size:12px">'+r[1]+'</div></div>';}).join('');
   var btn=document.getElementById('btn-md-acao');
   if(d.status==='Pendente'){btn.style.display='block';btn.textContent='Marcar como pago';btn.onclick=function(){atualizarStatus(d.id,'Pago');fecharModal('modal-detalhe');};}
   else if(d.status==='Pago'){btn.style.display='block';btn.textContent='Marcar como faturado';btn.onclick=function(){atualizarStatus(d.id,'Faturado');fecharModal('modal-detalhe');};}
@@ -376,49 +484,53 @@ function verDetalhe(id){
   document.getElementById('modal-detalhe').classList.add('open');
 }
 
-function abrirFatura(nomeCliente){
+function abrirFatura(nomeCliente) {
   var pagas=todasDespesas.filter(function(d){return d.cliente===nomeCliente&&d.status==='Pago';});
   var total=pagas.reduce(function(s,d){return s+Number(d.valor);},0);
   var cli=todosClientes[nomeCliente.trim().toLowerCase()];
   var mes=new Date().toLocaleString('pt-BR',{month:'long',year:'numeric'});
-
   faturaAtual={cliente:nomeCliente,despesas:pagas,total:total,email:cli?cli.email:'',ids:pagas.map(function(d){return d.id;})};
-
   var linhas=pagas.map(function(d){
     return '<tr><td><span style="font-family:monospace;font-size:11px">'+(d.codigo||'—')+'</span></td>'
       +'<td>'+d.tipo_despesa+'</td><td>'+fmtData(d.data_despesa)+'</td>'
       +'<td style="text-align:right;font-weight:700">'+fmt(d.valor)+'</td></tr>';
   }).join('');
-
+  var caAviso = !caAccessToken
+    ? '<div class="status-msg info show" style="margin-bottom:.75rem">⚠️ Conta Azul não conectado. Conecte primeiro para gerar cobrança automática. O e-mail ainda será enviado sem boleto.</div>'
+    : '';
   document.getElementById('mf-title').textContent='Fatura — '+nomeCliente;
   document.getElementById('mf-body').innerHTML=
-    '<div class="fatura-header"><h3>A&M Associados</h3><p>Reembolso de custas processuais — '+mes+'</p></div>'
+    caAviso
+    +'<div class="fatura-header"><h3>A&M Associados</h3><p>Reembolso de custas processuais — '+mes+'</p></div>'
     +'<table class="fatura-table"><thead><tr><th>Código</th><th>Tipo</th><th>Data</th><th style="text-align:right">Valor</th></tr></thead><tbody>'+linhas+'</tbody></table>'
     +'<div class="fatura-total"><span class="fatura-total-label">Total a reembolsar</span><span class="fatura-total-val">'+fmt(total)+'</span></div>'
-    +'<div><label style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light)">E-mail do cliente</label>'
-    +'<input class="input-email" id="fatura-email" type="email" value="'+(cli?cli.email:'')+'" placeholder="email@cliente.com.br">'
-    +'</div>'
-    +'<div class="ca-token-area"><div class="ca-token-label">Token Conta Azul (access_token)</div>'
-    +'<input class="input-email" id="ca-token" type="text" placeholder="eyJraWQiOi... (necessário para gerar boleto)">'
-    +'<div style="font-size:11px;color:var(--text-light);margin-top:.375rem">Obtenha em: Apps Script → testarConexaoCA() → copie o token do log</div>'
-    +'</div>';
-
+    +'<div class="field-group"><label class="field-label">E-mail do cliente</label>'
+    +'<input class="field-input" id="fatura-email" type="email" value="'+(cli?cli.email:'')+'" placeholder="email@cliente.com.br"></div>';
   document.getElementById('mf-status').className='status-msg';
   document.getElementById('mf-status').textContent='';
   document.getElementById('btn-mf-gerar').disabled=false;
-  document.getElementById('btn-mf-gerar').textContent='Gerar cobrança no CA e enviar e-mail';
+  document.getElementById('btn-mf-gerar').textContent='Gerar cobrança e enviar e-mail';
   document.getElementById('modal-fatura').classList.add('open');
 }
 
-async function gerarFaturaCA(){
+async function gerarFaturaCA() {
   var email=document.getElementById('fatura-email').value.trim();
-  var token=document.getElementById('ca-token').value.trim();
   if(!email){showStatusMsg('Informe o e-mail do cliente.','err');return;}
-  if(!token){showStatusMsg('Informe o token do Conta Azul.','err');return;}
-  if(!faturaAtual){return;}
-
+  if(!faturaAtual) return;
   var btn=document.getElementById('btn-mf-gerar');
-  btn.disabled=true; btn.textContent='Gerando cobrança...';
+  btn.disabled=true;
+
+  // Se não tem token, tentar renovar
+  if(!caAccessToken) {
+    showStatusMsg('Tentando conectar ao Conta Azul...','info');
+    var renovado = await renovarTokenCA();
+    if(!renovado) {
+      showStatusMsg('Conta Azul não conectado. Clique em "Conectar Conta Azul" no topo e tente novamente.','err');
+      btn.disabled=false; return;
+    }
+  }
+
+  btn.textContent='Criando cobrança no CA...';
   showStatusMsg('Criando cobrança no Conta Azul...','info');
 
   var hoje=new Date();
@@ -429,73 +541,85 @@ async function gerarFaturaCA(){
     descricao:'Reembolso de custas — '+faturaAtual.cliente+' — '+hoje.toLocaleString('pt-BR',{month:'long',year:'numeric'}),
     valor:faturaAtual.total,
     data_competencia:fmtDate(hoje),
-    observacao:'Fatura de reembolso de custas processuais — '+faturaAtual.ids.length+' despesas',
+    observacao:'Fatura de reembolso: '+faturaAtual.ids.length+' despesas',
     conta_financeira:'be7e686a-026c-4c84-a7f1-cc8535370c29',
     rateio:[{id_categoria:'0d7698ab-f3b7-4299-ba41-7e80cf68e72f',valor:faturaAtual.total}],
-    condicao_pagamento:{
-      parcelas:[{
-        descricao:'Reembolso custas — '+faturaAtual.cliente,
-        data_vencimento:fmtDate(venc),
-        nota:'Fatura gerada automaticamente',
-        conta_financeira:'be7e686a-026c-4c84-a7f1-cc8535370c29',
-        detalhe_valor:{valor_bruto:faturaAtual.total,valor_liquido:faturaAtual.total}
-      }]
-    }
+    condicao_pagamento:{parcelas:[{
+      descricao:'Reembolso custas — '+faturaAtual.cliente,
+      data_vencimento:fmtDate(venc),
+      conta_financeira:'be7e686a-026c-4c84-a7f1-cc8535370c29',
+      detalhe_valor:{valor_bruto:faturaAtual.total,valor_liquido:faturaAtual.total}
+    }]}
   };
 
-  var caResp,caData;
-  try{
+  var caResp, caData;
+  try {
     caResp=await fetch(CA_URL+'/financeiro/eventos-financeiros/contas-a-receber',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+caAccessToken},
       body:JSON.stringify(bodyCA)
     });
     caData=await caResp.json();
-  }catch(e){showStatusMsg('Erro ao conectar com Conta Azul: '+e.message,'err');btn.disabled=false;btn.textContent='Tentar novamente';return;}
+  } catch(e) {
+    // Token expirou, tentar renovar
+    showStatusMsg('Token expirou, renovando...','info');
+    var renovado=await renovarTokenCA();
+    if(!renovado){showStatusMsg('Erro de autenticação. Reconecte o Conta Azul.','err');btn.disabled=false;return;}
+    caResp=await fetch(CA_URL+'/financeiro/eventos-financeiros/contas-a-receber',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+caAccessToken},
+      body:JSON.stringify(bodyCA)
+    });
+    caData=await caResp.json();
+  }
 
   if(!caResp.ok){
-    showStatusMsg('Erro no Conta Azul: '+(caData.message||JSON.stringify(caData)),'err');
-    btn.disabled=false;btn.textContent='Tentar novamente';return;
+    // Token pode ter expirado com 401
+    if(caResp.status===401){
+      showStatusMsg('Sessão expirada. Reconectando...','info');
+      var ok=await renovarTokenCA();
+      if(!ok){showStatusMsg('Reconecte o Conta Azul e tente novamente.','err');btn.disabled=false;return;}
+      caResp=await fetch(CA_URL+'/financeiro/eventos-financeiros/contas-a-receber',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+caAccessToken},
+        body:JSON.stringify(bodyCA)
+      });
+      caData=await caResp.json();
+    }
+    if(!caResp.ok){showStatusMsg('Erro no CA: '+(caData.message||JSON.stringify(caData)),'err');btn.disabled=false;return;}
   }
 
   var protocolId=caData.protocolId||caData.id||'gerado';
-  showStatusMsg('Cobrança criada no CA ('+protocolId+'). Enviando e-mail...','info');
-  btn.textContent='Enviando e-mail...';
+  showStatusMsg('Cobrança criada! Preparando e-mail...','info');
+  btn.textContent='Abrindo Gmail...';
 
-  // Montar HTML do e-mail via mailto (fallback para Gmail)
   var linhasEmail=faturaAtual.despesas.map(function(d){
     return '• '+d.codigo+' | '+d.tipo_despesa+' | '+fmtData(d.data_despesa)+' | '+fmt(d.valor);
   }).join('\n');
-
-  var assunto='A&M Associados — Reembolso de custas — '+hoje.toLocaleString('pt-BR',{month:'long',year:'numeric'});
+  var mes=new Date().toLocaleString('pt-BR',{month:'long',year:'numeric'});
+  var assunto='A&M Associados — Reembolso de custas — '+mes;
   var corpo='Prezado(a) '+faturaAtual.cliente+',\n\n'
     +'Segue o demonstrativo de custas processuais adiantadas pelo escritório em seu nome:\n\n'
     +linhasEmail+'\n\n'
     +'TOTAL A REEMBOLSAR: '+fmt(faturaAtual.total)+'\n\n'
-    +'O boleto foi gerado no sistema Conta Azul. Caso não tenha recebido o link diretamente, entre em contato com nosso financeiro.\n\n'
-    +'Protocolo CA: '+protocolId+'\n\n'
-    +'Atenciosamente,\nA&M Associados\n\n(11) 3294-5994';
+    +'O boleto foi gerado no sistema Conta Azul. Protocolo: '+protocolId+'\n\n'
+    +'Em caso de dúvidas, entre em contato com nosso financeiro.\n\n'
+    +'Atenciosamente,\nA&M Associados\n(11) 3294-5994';
 
-  // Abrir Gmail com o e-mail pré-preenchido
   var gmailUrl='https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)
-    +'&su='+encodeURIComponent(assunto)
-    +'&body='+encodeURIComponent(corpo);
+    +'&su='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(corpo);
 
-  // Marcar despesas como Enviado
   await sb.from('despesas').update({status:'Enviado'}).in('id',faturaAtual.ids);
-
-  showStatusMsg('Cobrança criada no CA! Abrindo Gmail para envio do e-mail...','ok');
+  showStatusMsg('✓ Cobrança criada no CA! Clique em "Abrir Gmail" para enviar o e-mail.','ok');
   btn.textContent='Abrir Gmail';
   btn.disabled=false;
   btn.onclick=function(){window.open(gmailUrl,'_blank');};
-
   await carregarDados();
 }
 
 function showStatusMsg(msg,tipo){
   var el=document.getElementById('mf-status');
-  el.textContent=msg;
-  el.className='status-msg show '+tipo;
+  el.textContent=msg; el.className='status-msg show '+tipo;
 }
 
 function fecharModal(id){document.getElementById(id).classList.remove('open');}
@@ -509,25 +633,25 @@ function showTab(tab,el){
   document.getElementById('tab-clientes').classList.toggle('active',tab==='clientes');
 }
 
-carregarDados();
-setInterval(carregarDados,30000);
+// ── Init ──
+document.addEventListener('DOMContentLoaded', async function() {
+  sb = supabase.createClient(SB_URL, SB_KEY);
 
-// Expor funções globais
-window.fmt = fmt;
-window.fmtData = fmtData;
-window.badgeStatus = badgeStatus;
-window.carregarDados = carregarDados;
-window.atualizarMetricas = atualizarMetricas;
-window.renderTabela = renderTabela;
-window.renderClientes = renderClientes;
-window.popularFiltroMes = popularFiltroMes;
-window.atualizarStatus = atualizarStatus;
-window.verDetalhe = verDetalhe;
-window.abrirFatura = abrirFatura;
-window.gerarFaturaCA = gerarFaturaCA;
-window.showStatusMsg = showStatusMsg;
-window.fecharModal = fecharModal;
-window.showTab = showTab;
+  // Verificar se voltou do OAuth com code na URL
+  var params = new URLSearchParams(window.location.search);
+  var code = params.get('code');
+  if (code) {
+    document.getElementById('ca-status-text').textContent = 'Conectando...';
+    await trocarCodePorToken(code);
+    // Limpar URL
+    window.history.replaceState({}, document.title, '/dashboard.html');
+  } else {
+    // Tentar carregar token salvo
+    await carregarTokenCA();
+  }
+
+  await carregarDados();
+  setInterval(carregarDados, 30000);
 });
 </script>
 </body>
