@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A&M — Clientes</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--plum:#4a1a4a;--plum-dark:#3a1238;--plum-pale:#f0e6f0;--gray-bg:#f0eeea;--gray-light:#e8e8e8;--white:#fff;--text:#1a1a1a;--text-mid:#444;--text-light:#777;--green:#16a34a;--red:#dc2626;--r:6px}
+body{font-family:'Open Sans',sans-serif;background:var(--gray-bg);color:var(--text);min-height:100vh}
+.topbar{background:var(--plum);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{display:flex;align-items:center;gap:1rem}
+.topbar-divider{width:1px;height:24px;background:rgba(255,255,255,.25)}
+.topbar-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.1em;text-transform:uppercase}
+.topbar-right{display:flex;gap:.75rem}
+.btn-nav{background:rgba(255,255,255,.15);border:none;color:white;padding:.5rem 1rem;border-radius:var(--r);font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem}
+.btn-nav:hover{background:rgba(255,255,255,.25)}
+.main{max-width:900px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+.panel{background:var(--white);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem}
+.panel-head{padding:1rem 1.25rem;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--plum)}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.75rem;padding:1.25rem;border-bottom:1px solid var(--gray-light);align-items:end}
+label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mid);display:block;margin-bottom:.375rem}
+input{width:100%;padding:.625rem .875rem;border:1.5px solid var(--gray-light);border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:13px;color:var(--text)}
+input:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(74,26,74,.08)}
+.btn-add{background:var(--plum);color:white;border:none;padding:.625rem 1.25rem;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.btn-add:hover{background:var(--plum-dark)}
+.import-area{padding:1.25rem;border-bottom:1px solid var(--gray-light)}
+.import-label{font-size:11px;color:var(--text-light);margin-bottom:.75rem}
+.import-label strong{color:var(--text-mid)}
+textarea{width:100%;padding:.625rem .875rem;border:1.5px solid var(--gray-light);border-radius:var(--r);font-family:monospace;font-size:12px;color:var(--text);min-height:120px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--plum)}
+.btn-import{background:var(--plum);color:white;border:none;padding:.625rem 1.25rem;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;margin-top:.75rem}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{padding:.625rem 1rem;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-light);background:#f8f7f5;border-bottom:1px solid var(--gray-light)}
+td{padding:.75rem 1rem;border-bottom:1px solid #f0eeea;color:var(--text)}
+tr:last-child td{border-bottom:none}
+.btn-del{background:none;border:1px solid #fca5a5;color:var(--red);padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer}
+.btn-del:hover{background:var(--red);color:white;border-color:var(--red)}
+.alert{padding:.75rem 1rem;border-radius:var(--r);font-size:12px;margin:.75rem 1.25rem 0;display:none}
+.alert.show{display:block}
+.alert.ok{background:#dcfce7;color:#14532d;border:1px solid #86efac}
+.alert.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.empty{padding:2rem;text-align:center;color:var(--text-light);font-size:13px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" style="height:28px;width:auto">
+      <defs><style>.lc{fill:#fff}</style></defs>
+      <g><path class="lc" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
+      <path class="lc" d="M55.0,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23h-2.70V13.63Z"/>
+      <path class="lc" d="M45.0,27.26l-2.39,1.43c.01.02.64,1.06.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/></g>
+    </svg>
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">Cadastro de Clientes</div>
+  </div>
+  <div class="topbar-right">
+    <a href="dashboard.html" class="btn-nav">← Dashboard</a>
+  </div>
+</div>
+
+<div class="main">
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Adicionar cliente</div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label for="nome">Nome do cliente</label>
+        <input type="text" id="nome" placeholder="Nome exato como aparece nas despesas">
+      </div>
+      <div>
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="contato@cliente.com.br">
+      </div>
+      <button class="btn-add" onclick="adicionarCliente()">Adicionar</button>
+    </div>
+    <div class="import-area">
+      <div class="import-label"><strong>Importar planilha</strong> — cole abaixo no formato: Nome;Email (um por linha)</div>
+      <textarea id="csv" placeholder="Empresa ABC;financeiro@abc.com.br&#10;João Silva;joao@silva.adv.br&#10;Construtora XYZ;adm@xyz.com.br"></textarea>
+      <button class="btn-import" onclick="importarCSV()">Importar todos</button>
+    </div>
+    <div class="alert" id="alert"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Clientes cadastrados</div>
+      <span id="qtd-clientes" style="font-size:11px;color:var(--text-light)">0 clientes</span>
+    </div>
+    <table>
+      <thead><tr><th>Nome</th><th>E-mail</th><th>Cadastrado em</th><th></th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty">Nenhum cliente cadastrado ainda.</div>
+  </div>
+</div>
+
+<script>
+const SB_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+function showAlert(msg, tipo) {
+  var a = document.getElementById('alert');
+  a.textContent = msg; a.className = 'alert show ' + tipo;
+  setTimeout(function(){ a.classList.remove('show'); }, 3000);
+}
+
+async function carregarClientes() {
+  var { data } = await sb.from('clientes').select('*').order('nome');
+  var tbody = document.getElementById('tbody');
+  var empty = document.getElementById('empty');
+  if (!data || data.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; document.getElementById('qtd-clientes').textContent = '0 clientes'; return; }
+  empty.style.display = 'none';
+  document.getElementById('qtd-clientes').textContent = data.length + ' clientes';
+  tbody.innerHTML = data.map(function(c) {
+    var dt = new Date(c.criado_em).toLocaleDateString('pt-BR');
+    return '<tr><td style="font-weight:600">'+c.nome+'</td><td>'+c.email+'</td><td style="color:var(--text-light)">'+dt+'</td>'
+      + '<td style="text-align:right"><button class="btn-del" onclick="deletar(\''+c.id+'\')">Remover</button></td></tr>';
+  }).join('');
+}
+
+async function adicionarCliente() {
+  var nome = document.getElementById('nome').value.trim();
+  var email = document.getElementById('email').value.trim();
+  if (!nome || !email) { showAlert('Preencha nome e e-mail.', 'err'); return; }
+  var { error } = await sb.from('clientes').upsert([{ nome, email }], { onConflict: 'nome' });
+  if (error) { showAlert('Erro: ' + error.message, 'err'); return; }
+  document.getElementById('nome').value = '';
+  document.getElementById('email').value = '';
+  showAlert('Cliente adicionado!', 'ok');
+  carregarClientes();
+}
+
+async function importarCSV() {
+  var csv = document.getElementById('csv').value.trim();
+  if (!csv) return;
+  var linhas = csv.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var registros = [];
+  linhas.forEach(function(l) {
+    var partes = l.split(';');
+    if (partes.length >= 2) registros.push({ nome: partes[0].trim(), email: partes[1].trim() });
+  });
+  if (registros.length === 0) { showAlert('Formato inválido. Use: Nome;Email', 'err'); return; }
+  var { error } = await sb.from('clientes').upsert(registros, { onConflict: 'nome' });
+  if (error) { showAlert('Erro: ' + error.message, 'err'); return; }
+  document.getElementById('csv').value = '';
+  showAlert(registros.length + ' clientes importados!', 'ok');
+  carregarClientes();
+}
+
+async function deletar(id) {
+  if (!confirm('Remover este cliente?')) return;
+  await sb.from('clientes').delete().eq('id', id);
+  carregarClientes();
+}
+
+carregarClientes();
+</script>
+</body>
+</html>

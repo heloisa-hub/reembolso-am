@@ -333,10 +333,10 @@ textarea{resize:vertical;min-height:72px}
 </div>
 <div class="footer">
   <div class="footer-brand">A&M Associados</div>
-  <div class="footer-contact">contato@anicetoemusqueira.com.br · (11) 3294-5994</div>
+  <div class="footer-contact"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="086b67667c697c67486966616b6d7c676d657d7b797d6d617a69266b6765266a7a">[email&#160;protected]</a> · (11) 3294-5994</div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const SUPABASE_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -414,6 +414,25 @@ document.getElementById('form').addEventListener('submit', async function(ev) {
   document.getElementById('loading-bar').classList.add('show');
 
   var codigo = gerarCodigo();
+
+  // Upload do comprovante para Supabase Storage
+  var anexo_url = null;
+  var arquivo = document.getElementById('comprovante').files[0];
+  if (arquivo) {
+    var ext = arquivo.name.split('.').pop();
+    var path = codigo + '/' + Date.now() + '.' + ext;
+    var { data: upData, error: upError } = await sb.storage.from('comprovantes').upload(path, arquivo);
+    if (upError) {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
+      document.getElementById('loading-bar').classList.remove('show');
+      alert('Erro ao enviar anexo: ' + upError.message);
+      return;
+    }
+    var { data: urlData } = sb.storage.from('comprovantes').getPublicUrl(path);
+    anexo_url = urlData ? urlData.publicUrl : null;
+  }
+
   var dados = {
     codigo: codigo,
     nome_adv: document.getElementById('nome_adv').value.trim(),
@@ -431,6 +450,7 @@ document.getElementById('form').addEventListener('submit', async function(ev) {
     cod_boleto: document.getElementById('cod_boleto').value.trim() || null,
     chave_pix: document.getElementById('chave_pix').value.trim() || null,
     status: status.value === 'Pendente' ? 'Pendente' : 'Pago',
+    anexo_url: anexo_url,
   };
 
   var { error } = await sb.from('despesas').insert([dados]);
@@ -462,10 +482,4 @@ function novoLancamento() {
   document.getElementById('upload-tag').textContent = 'Boleto, guia ou comprovante';
   var btn = document.getElementById('btn-submit');
   btn.disabled = false;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
-  document.getElementById('data_despesa').valueAsDate = new Date();
-}
-</script>
-</body>
-</html>
- 
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:non
