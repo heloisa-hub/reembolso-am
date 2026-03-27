@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A&M Associados — Dashboard Financeiro</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--plum:#4a1a4a;--plum-dark:#3a1238;--plum-pale:#f0e6f0;--gray-bg:#f0eeea;--gray-light:#e8e8e8;--white:#fff;--text:#1a1a1a;--text-mid:#444;--text-light:#777;--green:#16a34a;--amber:#d97706;--red:#dc2626;--blue:#185fa5;--r:6px}
@@ -224,6 +224,7 @@ tr:hover td{background:#fafaf8}
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 const SB_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
 const CA_URL = 'https://api-v2.contaazul.com/v1';
@@ -473,7 +474,7 @@ async function gerarFaturaCA(){
     +'TOTAL A REEMBOLSAR: '+fmt(faturaAtual.total)+'\n\n'
     +'O boleto foi gerado no sistema Conta Azul. Caso não tenha recebido o link diretamente, entre em contato com nosso financeiro.\n\n'
     +'Protocolo CA: '+protocolId+'\n\n'
-    +'Atenciosamente,\nA&M Associados\ncontato@anicetoemusqueira.com.br\n(11) 3294-5994';
+    +'Atenciosamente,\nA&M Associados\n\n(11) 3294-5994';
 
   // Abrir Gmail com o e-mail pré-preenchido
   var gmailUrl='https://mail.google.com/mail/?view=cm&to='+encodeURIComponent(email)
@@ -510,6 +511,24 @@ function showTab(tab,el){
 
 carregarDados();
 setInterval(carregarDados,30000);
+
+// Expor funções globais
+window.fmt = fmt;
+window.fmtData = fmtData;
+window.badgeStatus = badgeStatus;
+window.carregarDados = carregarDados;
+window.atualizarMetricas = atualizarMetricas;
+window.renderTabela = renderTabela;
+window.renderClientes = renderClientes;
+window.popularFiltroMes = popularFiltroMes;
+window.atualizarStatus = atualizarStatus;
+window.verDetalhe = verDetalhe;
+window.abrirFatura = abrirFatura;
+window.gerarFaturaCA = gerarFaturaCA;
+window.showStatusMsg = showStatusMsg;
+window.fecharModal = fecharModal;
+window.showTab = showTab;
+});
 </script>
 </body>
 </html>
