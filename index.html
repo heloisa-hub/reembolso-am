@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A&M Associados — Lançamento de Despesas</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--plum:#4a1a4a;--plum-dark:#3a1238;--plum-mid:#5d2460;--plum-pale:#f0e6f0;--gray-bg:#d8d8d8;--gray-light:#e8e8e8;--gray-mid:#b0b0b0;--white:#ffffff;--text:#1a1a1a;--text-mid:#444;--text-light:#777;--green:#16a34a;--amber:#d97706;--red:#dc2626;--r:4px}
+:root{
+  --plum:#4a1a4a;--plum-dark:#3a1238;--plum-mid:#5d2460;
+  --plum-pale:#f0e6f0;--gray-bg:#d8d8d8;--gray-light:#e8e8e8;
+  --gray-mid:#b0b0b0;--white:#ffffff;--text:#1a1a1a;
+  --text-mid:#444;--text-light:#777;--green:#16a34a;--amber:#d97706;--red:#dc2626;
+  --r:4px;
+}
 body{font-family:'Open Sans',sans-serif;background:var(--gray-bg);color:var(--text);min-height:100vh}
+
 .header{background:var(--plum);padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between}
 .header-left{display:flex;align-items:center;gap:1rem}
 .header-divider{width:1px;height:28px;background:rgba(255,255,255,.25)}
@@ -17,23 +23,29 @@ body{font-family:'Open Sans',sans-serif;background:var(--gray-bg);color:var(--te
 .header-url{font-size:10px;color:rgba(255,255,255,.4);font-weight:300}
 .arrow-badge{width:40px;height:40px;background:var(--white);border-radius:50px;display:flex;align-items:center;justify-content:center}
 .arrow-badge svg{width:16px;height:16px;stroke:var(--plum);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
 .container{max-width:700px;margin:2rem auto;padding:0 1.5rem 4rem}
 .card{background:var(--white);border-radius:var(--r);overflow:hidden}
 .card-title-bar{background:var(--gray-light);padding:1rem 1.75rem;border-bottom:2px solid var(--plum)}
 .card-title-bar h2{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--plum)}
 .card-body{padding:2rem 1.75rem}
+
 .section-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--plum);margin:1.75rem 0 .875rem;padding-bottom:.5rem;border-bottom:1px solid var(--plum-pale);display:flex;align-items:center;gap:.5rem}
 .section-label::before{content:'';display:block;width:14px;height:2px;background:var(--plum);flex-shrink:0}
 .section-label:first-child{margin-top:0}
+
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .field{display:flex;flex-direction:column;gap:.375rem}
 .field.full{grid-column:1/-1}
+
 label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-mid)}
 label .req{color:var(--plum);margin-left:2px}
 input,select,textarea{width:100%;padding:.625rem .875rem;border:1.5px solid var(--gray-light);border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:13px;color:var(--text);background:var(--white);transition:border-color .15s;appearance:none;-webkit-appearance:none}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .875rem center;padding-right:2.5rem;cursor:pointer}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--plum);box-shadow:0 0 0 3px rgba(74,26,74,.08)}
 textarea{resize:vertical;min-height:72px}
+
+/* ÁREA TOGGLE */
 .area-toggle{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .area-option{position:relative}
 .area-option input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
@@ -41,8 +53,12 @@ textarea{resize:vertical;min-height:72px}
 .area-label:hover{border-color:var(--plum-mid);color:var(--plum)}
 .area-option input:checked + .area-label{border-color:var(--plum);background:var(--plum);color:var(--white)}
 .area-label svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* CAMPO CONDICIONAL */
 .cond-field{display:none;flex-direction:column;gap:.375rem}
 .cond-field.show{display:flex}
+
+/* PAYMENT */
 .pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.625rem}
 .pay-opt{position:relative}
 .pay-opt input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
@@ -55,10 +71,13 @@ textarea{resize:vertical;min-height:72px}
 .pay-opt input:checked + .pay-label .pay-icon svg{stroke:var(--white)}
 .pay-label span{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-light);transition:color .15s}
 .pay-opt input:checked + .pay-label span{color:var(--plum)}
+
+/* STATUS */
 .status-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .status-opt{position:relative}
 .status-opt input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
 .status-label{display:flex;align-items:flex-start;gap:.75rem;padding:1rem;border:1.5px solid var(--gray-light);border-radius:var(--r);cursor:pointer;transition:all .15s}
+.status-label:hover{border-color:var(--gray-mid)}
 .status-opt input:checked + .status-label.pend{border-color:var(--amber);background:#fffbeb}
 .status-opt input:checked + .status-label.paid{border-color:var(--green);background:#f0fdf4}
 .status-icon{width:30px;height:30px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -69,6 +88,8 @@ textarea{resize:vertical;min-height:72px}
 .si-paid svg{stroke:var(--green)}
 .status-text strong{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text)}
 .status-text span{font-size:11px;color:var(--text-light);line-height:1.4;margin-top:3px;display:block}
+
+/* INFO BOX */
 .info-box{display:none;align-items:flex-start;gap:.75rem;padding:.875rem 1rem;border-radius:var(--r);margin-top:.75rem;font-size:12px;line-height:1.5}
 .info-box.show{display:flex}
 .info-box.amber{background:#fffbeb;border:1px solid #fcd34d;color:#92400e}
@@ -76,6 +97,8 @@ textarea{resize:vertical;min-height:72px}
 .info-box svg{width:14px;height:14px;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0;margin-top:1px}
 .info-box.amber svg{stroke:var(--amber)}
 .info-box.green svg{stroke:var(--green)}
+
+/* UPLOAD */
 .upload-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--plum);margin-bottom:.5rem;display:block}
 .upload-area{border:1.5px dashed var(--gray-mid);border-radius:var(--r);padding:1.25rem;text-align:center;cursor:pointer;transition:all .15s;background:#fafafa;position:relative}
 .upload-area:hover{border-color:var(--plum);background:var(--plum-pale)}
@@ -87,53 +110,73 @@ textarea{resize:vertical;min-height:72px}
 .upload-preview.show{display:flex}
 .upload-preview svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2;flex-shrink:0}
 .upload-preview span{font-size:12px;color:var(--green);font-weight:600}
+
+/* SUBMIT */
 .submit-area{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .submit-hint{font-size:11px;color:var(--text-light);line-height:1.6}
 .btn-submit{background:var(--plum);color:var(--white);border:none;padding:.875rem 2rem;border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:.625rem}
 .btn-submit:hover{background:var(--plum-dark);transform:translateY(-1px)}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn-submit svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* SUCCESS */
 .success-screen{display:none;flex-direction:column;align-items:center;text-align:center;padding:3.5rem 2rem;gap:1rem}
 .success-screen.show{display:flex}
 .success-icon{width:64px;height:64px;background:var(--plum);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .success-icon svg{width:26px;height:26px;stroke:var(--white);fill:none;stroke-width:2.5;stroke-linecap:round}
-.success-screen h3{font-size:20px;font-weight:800;color:var(--plum);text-transform:uppercase}
+.success-screen h3{font-size:20px;font-weight:800;color:var(--plum);letter-spacing:-.5px;text-transform:uppercase}
 .success-screen p{font-size:13px;color:var(--text-light);max-width:360px;line-height:1.6}
 .success-code{font-family:monospace;font-size:13px;font-weight:700;background:var(--plum-pale);padding:.5rem 1.25rem;border-radius:var(--r);color:var(--plum);border:1px solid rgba(74,26,74,.2);letter-spacing:.05em}
 .btn-novo{margin-top:.5rem;background:none;border:2px solid var(--plum);color:var(--plum);padding:.75rem 1.5rem;border-radius:var(--r);font-family:'Open Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
 .btn-novo:hover{background:var(--plum);color:var(--white)}
+
 .loading-bar{display:none;height:3px;background:var(--plum-pale);position:relative;overflow:hidden}
 .loading-bar.show{display:block}
 .loading-bar::after{content:'';position:absolute;height:100%;width:40%;background:var(--plum);animation:loading 1s ease-in-out infinite}
+
 .footer{background:var(--plum-dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
 .footer-brand{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase}
 .footer-contact{font-size:10px;color:rgba(255,255,255,.35)}
+
 @keyframes loading{0%{left:-40%}100%{left:140%}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:540px){.grid-2{grid-template-columns:1fr}.pay-grid{grid-template-columns:repeat(3,1fr)}.status-grid{grid-template-columns:1fr}.submit-area{flex-direction:column;align-items:stretch}.btn-submit{justify-content:center}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:540px){
+  .grid-2{grid-template-columns:1fr}
+  .pay-grid{grid-template-columns:repeat(3,1fr)}
+  .status-grid{grid-template-columns:1fr}
+  .submit-area{flex-direction:column;align-items:stretch}
+  .btn-submit{justify-content:center}
+}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
+
 <div class="header">
   <div class="header-left">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" style="height:34px;width:auto;display:block">
       <defs><style>.lc{fill:#ffffff}</style></defs>
-      <g><g>
-        <path class="lc" d="M85.74,22.46h.78l2.04,5.10h-.64l-.60-1.53h-2.37l-.60,1.53h-.64l2.04-5.10ZM87.09,25.45l-.95-2.41-.95,2.41h1.91Z"/>
-        <path class="lc" d="M94.99,26.13c0,1.04-.90,1.50-1.86,1.50-1.35,0-2.00-.71-2.16-1.61h.61c.17.68.65,1.04,1.54,1.04.79,0,1.27-.33,1.27-.91,0-.56-.47-.68-1.46-.90-1.08-.24-1.81-.50-1.81-1.41,0-.95.84-1.48,1.83-1.48,1.19,0,1.81.59,1.99,1.35h-.61c-.19-.49-.63-.79-1.37-.79-.75,0-1.23.34-1.23.91,0,.42.32.58,1.35.82,1.22.27,1.94.50,1.94,1.46Z"/>
-        <path class="lc" d="M101.84,26.13c0,1.04-.90,1.50-1.86,1.50-1.35,0-2.00-.71-2.16-1.61h.61c.17.68.65,1.04,1.54,1.04.79,0,1.27-.33,1.27-.91,0-.56-.47-.68-1.46-.90-1.08-.24-1.81-.50-1.81-1.41,0-.95.84-1.48,1.83-1.48,1.19,0,1.81.59,1.99,1.35h-.61c-.19-.49-.63-.79-1.37-.79-.75,0-1.23.34-1.23.91,0,.42.32.58,1.35.82,1.22.27,1.94.50,1.94,1.46Z"/>
-        <path class="lc" d="M109.95,25.01c0,1.50-1.14,2.63-2.63,2.63-1.48,0-2.63-1.13-2.63-2.63s1.15-2.63,2.64-2.63c1.48,0,2.62,1.13,2.62,2.63ZM105.30,25.01c0,1.17.88,2.05,2.02,2.05,1.14,0,2.02-.87,2.02-2.05,0-1.18-.88-2.05-2.02-2.05-1.14,0-2.02.88-2.02,2.05Z"/>
-        <path class="lc" d="M112.92,25.01c0-1.51,1.12-2.63,2.62-2.63,1.15,0,2.07.68,2.42,1.70h-.65c-.31-.68-.96-1.13-1.78-1.13-1.15,0-2.00.88-2.00,2.05s.85,2.05,2.00,2.05c.82,0,1.47-.44,1.78-1.13h.65c-.35,1.03-1.27,1.70-2.42,1.70-1.50,0-2.62-1.12-2.62-2.63Z"/>
-        <path class="lc" d="M121.03,22.46h.60v5.10h-.60v-5.10Z"/>
-        <path class="lc" d="M126.67,22.46h.78l2.04,5.10h-.64l-.60-1.53h-2.37l-.60,1.53h-.64l2.04-5.10ZM128.02,25.45l-.95-2.41-.95,2.41h1.91Z"/>
-        <path class="lc" d="M132.49,22.46h1.73c1.49,0,2.61,1.06,2.61,2.55,0,1.48-1.14,2.55-2.61,2.55h-1.73v-5.10ZM134.22,26.98c1.14,0,1.99-.82,2.00-1.97,0-1.16-.87-1.97-2.00-1.97h-1.13v3.95h1.13Z"/>
-        <path class="lc" d="M145.03,25.01c0,1.50-1.14,2.63-2.63,2.63-1.48,0-2.63-1.13-2.63-2.63s1.15-2.63,2.64-2.63c1.48,0,2.62,1.13,2.62,2.63ZM140.39,25.01c0,1.17.88,2.05,2.02,2.05,1.14,0,2.02-.87,2.02-2.05,0-1.18-.88-2.05-2.02-2.05-1.14,0-2.02.88-2.02,2.05Z"/>
-        <path class="lc" d="M151.91,26.13c0,1.04-.90,1.50-1.86,1.50-1.35,0-2.00-.71-2.16-1.61h.61c.17.68.65,1.04,1.54,1.04.79,0,1.27-.33,1.27-.91,0-.56-.47-.68-1.46-.90-1.08-.24-1.81-.50-1.81-1.41,0-.95.84-1.48,1.83-1.48,1.19,0,1.81.59,1.99,1.35h-.61c-.19-.49-.63-.79-1.37-.79-.75,0-1.23.34-1.23.91,0,.42.32.58,1.35.82,1.22.27,1.94.50,1.94,1.46Z"/>
-      </g><g>
-        <path class="lc" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
-        <path class="lc" d="M55.0,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23h-2.70V13.63Z"/>
-        <path class="lc" d="M45.0,27.26l-2.39,1.43c.01.02.64,1.06.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/>
-      </g></g>
+      <g>
+        <g>
+          <path class="lc" d="M85.74,22.46h.78l2.04,5.10h-.64l-.60-1.53h-2.37l-.60,1.53h-.64l2.04-5.10ZM87.09,25.45l-.95-2.41-.95,2.41h1.91Z"/>
+          <path class="lc" d="M94.99,26.13c0,1.04-.90,1.50-1.86,1.50-1.35,0-2.00-.71-2.16-1.61h.61c.17.68.65,1.04,1.54,1.04.79,0,1.27-.33,1.27-.91,0-.56-.47-.68-1.46-.90-1.08-.24-1.81-.50-1.81-1.41,0-.95.84-1.48,1.83-1.48,1.19,0,1.81.59,1.99,1.35h-.61c-.19-.49-.63-.79-1.37-.79-.75,0-1.23.34-1.23.91,0,.42.32.58,1.35.82,1.22.27,1.94.50,1.94,1.46Z"/>
+          <path class="lc" d="M101.84,26.13c0,1.04-.90,1.50-1.86,1.50-1.35,0-2.00-.71-2.16-1.61h.61c.17.68.65,1.04,1.54,1.04.79,0,1.27-.33,1.27-.91,0-.56-.47-.68-1.46-.90-1.08-.24-1.81-.50-1.81-1.41,0-.95.84-1.48,1.83-1.48,1.19,0,1.81.59,1.99,1.35h-.61c-.19-.49-.63-.79-1.37-.79-.75,0-1.23.34-1.23.91,0,.42.32.58,1.35.82,1.22.27,1.94.50,1.94,1.46Z"/>
+          <path class="lc" d="M109.95,25.01c0,1.50-1.14,2.63-2.63,2.63-1.48,0-2.63-1.13-2.63-2.63s1.15-2.63,2.64-2.63c1.48,0,2.62,1.13,2.62,2.63ZM105.30,25.01c0,1.17.88,2.05,2.02,2.05,1.14,0,2.02-.87,2.02-2.05,0-1.18-.88-2.05-2.02-2.05-1.14,0-2.02.88-2.02,2.05Z"/>
+          <path class="lc" d="M112.92,25.01c0-1.51,1.12-2.63,2.62-2.63,1.15,0,2.07.68,2.42,1.70h-.65c-.31-.68-.96-1.13-1.78-1.13-1.15,0-2.00.88-2.00,2.05s.85,2.05,2.00,2.05c.82,0,1.47-.44,1.78-1.13h.65c-.35,1.03-1.27,1.70-2.42,1.70-1.50,0-2.62-1.12-2.62-2.63Z"/>
+          <path class="lc" d="M121.03,22.46h.60v5.10h-.60v-5.10Z"/>
+          <path class="lc" d="M126.67,22.46h.78l2.04,5.10h-.64l-.60-1.53h-2.37l-.60,1.53h-.64l2.04-5.10ZM128.02,25.45l-.95-2.41-.95,2.41h1.91Z"/>
+          <path class="lc" d="M132.49,22.46h1.73c1.49,0,2.61,1.06,2.61,2.55,0,1.48-1.14,2.55-2.61,2.55h-1.73v-5.10ZM134.22,26.98c1.14,0,1.99-.82,2.00-1.97,0-1.16-.87-1.97-2.00-1.97h-1.13v3.95h1.13Z"/>
+          <path class="lc" d="M145.03,25.01c0,1.50-1.14,2.63-2.63,2.63-1.48,0-2.63-1.13-2.63-2.63s1.15-2.63,2.64-2.63c1.48,0,2.62,1.13,2.62,2.63ZM140.39,25.01c0,1.17.88,2.05,2.02,2.05,1.14,0,2.02-.87,2.02-2.05,0-1.18-.88-2.05-2.02-2.05-1.14,0-2.02.88-2.02,2.05Z"/>
+          <path class="lc" d="M151.91,26.13c0,1.04-.90,1.50-1.86,1.50-1.35,0-2.00-.71-2.16-1.61h.61c.17.68.65,1.04,1.54,1.04.79,0,1.27-.33,1.27-.91,0-.56-.47-.68-1.46-.90-1.08-.24-1.81-.50-1.81-1.41,0-.95.84-1.48,1.83-1.48,1.19,0,1.81.59,1.99,1.35h-.61c-.19-.49-.63-.79-1.37-.79-.75,0-1.23.34-1.23.91,0,.42.32.58,1.35.82,1.22.27,1.94.50,1.94,1.46Z"/>
+        </g>
+        <g>
+          <path class="lc" d="M17.18,13.63h3.48l9.10,22.74h-2.86l-2.70-6.82h-10.56l-2.70,6.82h-2.86l9.10-22.74ZM23.19,26.98l-4.26-10.75-4.26,10.75h8.51Z"/>
+          <path class="lc" d="M55.0,13.63h3.31l7.21,10.88,7.21-10.88h3.31v22.74h-2.70v-19.23l-7.70,11.60h-.26l-7.70-11.60v19.23h-2.70V13.63Z"/>
+          <path class="lc" d="M45.0,27.26l-2.39,1.43c.01.02.64,1.06.70,2.40.06,1.37-.87,3.69-4.33,3.69-.90,0-3.77-.36-3.77-3.43,0-2.50,1.81-3.75,4.91-5.69,2.71-1.70,5.78-3.63,5.78-7.26,0-3.84-2.38-5.88-5.85-5.88-3.79,0-6.46,1.88-6.46,5.57,0,2.50,1.38,4.47,3.40,6.14-2.30,1.60-4.79,3.31-4.79,7.14,0,2.81,1.79,6.14,6.41,6.14,3.09,0,5.96-1.09,6.55-4.50l1.78,3.36h3.40l-5.35-9.12ZM36.49,18.36c0-1.97,1.24-3.21,3.37-3.21,1.96,0,3.06,1.01,3.06,3.23,0,1.71-1.45,3.04-3.81,4.55-1.04-1.02-2.62-2.97-2.62-4.58Z"/>
+        </g>
+      </g>
     </svg>
     <div class="header-divider"></div>
     <div>
@@ -152,6 +195,7 @@ textarea{resize:vertical;min-height:72px}
     <div class="loading-bar" id="loading-bar"></div>
     <div class="card-body" id="form-body">
       <form id="form" novalidate>
+
         <div class="section-label">Responsável</div>
         <div class="field">
           <label for="nome_adv">Nome do advogado(a) <span class="req">*</span></label>
@@ -163,25 +207,33 @@ textarea{resize:vertical;min-height:72px}
           <label for="area_direito">Área do direito <span class="req">*</span></label>
           <select id="area_direito" required>
             <option value="">Selecione...</option>
-            <option>Trabalhista</option><option>Tributário</option><option>Cível</option>
-            <option>Societário</option><option>Empresarial</option><option>Imobiliário</option>
-            <option>Administrativo</option><option>Ambiental</option><option>Previdenciário</option>
-            <option>Família e Sucessões</option><option>Propriedade Intelectual</option>
-            <option>Regulatório</option><option>Outra</option>
+            <option>Trabalhista</option>
+            <option>Tributário</option>
+            <option>Cível</option>
+            <option>Societário</option>
+            <option>Empresarial</option>
+            <option>Imobiliário</option>
+            <option>Administrativo</option>
+            <option>Ambiental</option>
+            <option>Previdenciário</option>
+            <option>Família e Sucessões</option>
+            <option>Propriedade Intelectual</option>
+            <option>Regulatório</option>
+            <option>Outra</option>
           </select>
         </div>
         <div class="field" style="margin-bottom:1rem">
           <label>Atuação <span class="req">*</span></label>
           <div class="area-toggle">
             <div class="area-option">
-              <input type="radio" name="area" id="area_cont" value="Contenciosa">
+              <input type="radio" name="area" id="area_cont" value="Contencioso">
               <label for="area_cont" class="area-label">
                 <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
                 Atuação Contenciosa
               </label>
             </div>
             <div class="area-option">
-              <input type="radio" name="area" id="area_cons" value="Consultiva">
+              <input type="radio" name="area" id="area_cons" value="Consultivo">
               <label for="area_cons" class="area-label">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
                 Atuação Consultiva
@@ -189,6 +241,7 @@ textarea{resize:vertical;min-height:72px}
             </div>
           </div>
         </div>
+
         <div class="grid-2">
           <div class="field">
             <label for="cliente">Cliente <span class="req">*</span></label>
@@ -211,31 +264,45 @@ textarea{resize:vertical;min-height:72px}
             <select id="tipo_despesa" required>
               <option value="">Selecione...</option>
               <optgroup label="Custas judiciais">
-                <option>Custas Judiciais / Emolumentos</option><option>Taxa Recursal</option>
-                <option>Preparo de Recurso</option><option>Custas de Execução</option>
+                <option>Custas Judiciais / Emolumentos</option>
+                <option>Taxa Recursal</option>
+                <option>Preparo de Recurso</option>
+                <option>Custas de Execução</option>
                 <option>Intimação / Citação por Oficial</option>
               </optgroup>
               <optgroup label="Cartório e extrajudicial">
-                <option>Despesas de Cartório / Extrajudiciais</option><option>Reconhecimento de Firma</option>
-                <option>Autenticação de Documentos</option><option>Registro em Cartório</option><option>Ata Notarial</option>
+                <option>Despesas de Cartório / Extrajudiciais</option>
+                <option>Reconhecimento de Firma</option>
+                <option>Autenticação de Documentos</option>
+                <option>Registro em Cartório</option>
+                <option>Ata Notarial</option>
               </optgroup>
               <optgroup label="Perícia e técnicos">
-                <option>Perícia / Honorários Técnicos</option><option>Laudo Pericial</option><option>Assistência Técnica</option>
+                <option>Perícia / Honorários Técnicos</option>
+                <option>Laudo Pericial</option>
+                <option>Assistência Técnica</option>
               </optgroup>
               <optgroup label="Diligências e transporte">
                 <option>Diligência (Cópia, Reconhecimento de Firma, etc.)</option>
                 <option>Transporte / Viagem (Táxi, Aplicativo, Passagem)</option>
-                <option>Quilometragem</option><option>Hospedagem em Diligência</option>
+                <option>Quilometragem</option>
+                <option>Hospedagem em Diligência</option>
               </optgroup>
               <optgroup label="Comunicação">
-                <option>Comunicação / Postagem (Correios, Sedex)</option><option>Publicação em Diário Oficial</option>
+                <option>Comunicação / Postagem (Correios, Sedex)</option>
+                <option>Publicação em Diário Oficial</option>
               </optgroup>
               <optgroup label="Reembolsos diversos">
-                <option>Reembolso de Alimentação em Diligência</option><option>Reembolso de Estacionamento</option>
-                <option>Reembolso de Pedágio</option><option>Reembolso de Material / Impressão</option>
-                <option>Tradução Juramentada</option><option>Despesas Consulares / Apostilamento</option>
+                <option>Reembolso de Alimentação em Diligência</option>
+                <option>Reembolso de Estacionamento</option>
+                <option>Reembolso de Pedágio</option>
+                <option>Reembolso de Material / Impressão</option>
+                <option>Tradução Juramentada</option>
+                <option>Despesas Consulares / Apostilamento</option>
               </optgroup>
-              <optgroup label="Outros"><option>Outro (Especifique na descrição)</option></optgroup>
+              <optgroup label="Outros">
+                <option>Outro (Especifique na descrição)</option>
+              </optgroup>
             </select>
           </div>
           <div class="field">
@@ -257,36 +324,84 @@ textarea{resize:vertical;min-height:72px}
           <div class="status-opt">
             <input type="radio" name="status_pag" id="st_pend" value="Pendente">
             <label for="st_pend" class="status-label pend">
-              <div class="status-icon si-pend"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-              <div class="status-text"><strong>Pagamento pendente</strong><span>Precisa pagar — financeiro vai processar</span></div>
+              <div class="status-icon si-pend">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="status-text">
+                <strong>Pagamento pendente</strong>
+                <span>Precisa pagar — financeiro vai processar</span>
+              </div>
             </label>
           </div>
           <div class="status-opt">
             <input type="radio" name="status_pag" id="st_paga" value="Já paga">
             <label for="st_paga" class="status-label paid">
-              <div class="status-icon si-paid"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-              <div class="status-text"><strong>Já paguei</strong><span>Despesa paga — solicitar reembolso</span></div>
+              <div class="status-icon si-paid">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="status-text">
+                <strong>Já paguei</strong>
+                <span>Despesa paga — solicitar reembolso</span>
+              </div>
             </label>
           </div>
         </div>
+
         <div class="info-box amber" id="info_pend">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           <span>Anexe o boleto ou guia abaixo. O financeiro receberá a solicitação e lançará no Conta Azul.</span>
         </div>
         <div class="info-box green" id="info_paga">
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          <span>Anexe o comprovante de pagamento. Será registrado e incluído no reembolso mensal.</span>
+          <span>Anexe o comprovante de pagamento. Será registrado no Conta Azul e incluído no reembolso mensal.</span>
         </div>
 
         <div class="section-label">Forma de pagamento</div>
         <div class="pay-grid">
-          <div class="pay-opt"><input type="radio" name="forma_pag" id="p_boleto" value="Boleto"><label for="p_boleto" class="pay-label"><div class="pay-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div><span>Boleto</span></label></div>
-          <div class="pay-opt"><input type="radio" name="forma_pag" id="p_pix" value="PIX"><label for="p_pix" class="pay-label"><div class="pay-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><span>PIX</span></label></div>
-          <div class="pay-opt"><input type="radio" name="forma_pag" id="p_guia" value="Guia de tributo"><label for="p_guia" class="pay-label"><div class="pay-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span>Guia/DARE</span></label></div>
-          <div class="pay-opt"><input type="radio" name="forma_pag" id="p_transf" value="Transferência"><label for="p_transf" class="pay-label"><div class="pay-icon"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div><span>Transferência</span></label></div>
-          <div class="pay-opt"><input type="radio" name="forma_pag" id="p_cartao" value="Cartão"><label for="p_cartao" class="pay-label"><div class="pay-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><span>Cartão</span></label></div>
-          <div class="pay-opt"><input type="radio" name="forma_pag" id="p_dinheiro" value="Dinheiro"><label for="p_dinheiro" class="pay-label"><div class="pay-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span>Dinheiro</span></label></div>
+          <div class="pay-opt">
+            <input type="radio" name="forma_pag" id="p_boleto" value="Boleto">
+            <label for="p_boleto" class="pay-label">
+              <div class="pay-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+              <span>Boleto</span>
+            </label>
+          </div>
+          <div class="pay-opt">
+            <input type="radio" name="forma_pag" id="p_pix" value="PIX">
+            <label for="p_pix" class="pay-label">
+              <div class="pay-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+              <span>PIX</span>
+            </label>
+          </div>
+          <div class="pay-opt">
+            <input type="radio" name="forma_pag" id="p_guia" value="Guia de tributo">
+            <label for="p_guia" class="pay-label">
+              <div class="pay-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <span>Guia/DARE</span>
+            </label>
+          </div>
+          <div class="pay-opt">
+            <input type="radio" name="forma_pag" id="p_transf" value="Transferência">
+            <label for="p_transf" class="pay-label">
+              <div class="pay-icon"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+              <span>Transferência</span>
+            </label>
+          </div>
+          <div class="pay-opt">
+            <input type="radio" name="forma_pag" id="p_cartao" value="Cartão">
+            <label for="p_cartao" class="pay-label">
+              <div class="pay-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <span>Cartão</span>
+            </label>
+          </div>
+          <div class="pay-opt">
+            <input type="radio" name="forma_pag" id="p_dinheiro" value="Dinheiro">
+            <label for="p_dinheiro" class="pay-label">
+              <div class="pay-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+              <span>Dinheiro</span>
+            </label>
+          </div>
         </div>
+
         <div style="margin-top:1rem">
           <div class="cond-field" id="campo_boleto">
             <label for="cod_boleto">Linha digitável / código de barras <span class="req">*</span></label>
@@ -314,169 +429,44 @@ textarea{resize:vertical;min-height:72px}
         </div>
 
         <div class="submit-area">
-          <p class="submit-hint">Ao enviar, o financeiro será notificado<br>e o lançamento registrado no sistema.</p>
+          <p class="submit-hint">Ao enviar, o financeiro será notificado<br>e o lançamento criado no Conta Azul.</p>
           <button type="submit" class="btn-submit" id="btn-submit">
             <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             Lançar despesa
           </button>
         </div>
+
       </form>
     </div>
+
     <div class="success-screen" id="success-screen">
       <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
       <h3>Despesa registrada</h3>
-      <p id="success-msg">A solicitação foi enviada ao financeiro e registrada no sistema.</p>
+      <p id="success-msg">A solicitação foi enviada ao financeiro e registrada no Conta Azul.</p>
       <div class="success-code" id="success-code">DESP-26-03-0001</div>
       <button class="btn-novo" onclick="novoLancamento()">Lançar outra despesa</button>
     </div>
   </div>
 </div>
+
 <div class="footer">
   <div class="footer-brand">A&M Associados</div>
-  <div class="footer-contact"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="086b67667c697c67486966616b6d7c676d657d7b797d6d617a69266b6765266a7a">[email&#160;protected]</a> · (11) 3294-5994</div>
+  <div class="footer-contact"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07646869736673684766696e64627368626a72747672626e75662964686a296575">[email&#160;protected]</a> · (11) 3294-5994</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js">
-});
-</script><script>
-var sb;
-document.addEventListener("DOMContentLoaded", function() {
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const SUPABASE_URL = 'https://davsmeqngkahdniqhmjb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdnNtZXFuZ2thaGRuaXFobWpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzUxMzksImV4cCI6MjA4OTk1MTEzOX0.aZ1oteLSRTgxW-4S6LY7tlHS9xZNVgtpCzROkyrA5b4';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var sb;
 
 function gerarCodigo() {
   var d = new Date();
   var aa = String(d.getFullYear()).slice(-2);
   var mm = String(d.getMonth()+1).padStart(2,'0');
-  var seq = String(Math.floor(Math.random()*9000)+1000);
-  return 'DESP-'+aa+'-'+mm+'-'+seq;
+  return 'DESP-'+aa+'-'+mm+'-'+String(Math.floor(Math.random()*9000)+1000);
 }
 
-document.querySelectorAll('input[name="area"]').forEach(function(r) {
-  r.addEventListener('change', function() {
-    var cp = document.getElementById('campo_processo');
-    var cc = document.getElementById('campo_caso');
-    cp.classList.remove('show'); cc.classList.remove('show');
-    if (this.value === 'Contenciosa') cp.classList.add('show');
-    else cc.classList.add('show');
-  });
-});
-
-document.querySelectorAll('input[name="status_pag"]').forEach(function(r) {
-  r.addEventListener('change', function() {
-    document.getElementById('info_pend').classList.remove('show');
-    document.getElementById('info_paga').classList.remove('show');
-    var tag = document.getElementById('upload-tag');
-    if (this.value === 'Pendente') { document.getElementById('info_pend').classList.add('show'); tag.textContent = 'Boleto ou guia a pagar (obrigatório)'; }
-    else { document.getElementById('info_paga').classList.add('show'); tag.textContent = 'Comprovante de pagamento (obrigatório)'; }
-  });
-});
-
-document.querySelectorAll('input[name="forma_pag"]').forEach(function(r) {
-  r.addEventListener('change', function() {
-    document.getElementById('campo_boleto').classList.remove('show');
-    document.getElementById('campo_pix').classList.remove('show');
-    if (this.value === 'Boleto' || this.value === 'Guia de tributo') document.getElementById('campo_boleto').classList.add('show');
-    else if (this.value === 'PIX') document.getElementById('campo_pix').classList.add('show');
-  });
-});
-
-document.getElementById('comprovante').addEventListener('change', function() {
-  var p = document.getElementById('upload-preview');
-  if (this.files && this.files[0]) { document.getElementById('upload-filename').textContent = this.files[0].name; p.classList.add('show'); }
-  else p.classList.remove('show');
-});
-
-document.getElementById('data_despesa').valueAsDate = new Date();
-
-document.getElementById('form').addEventListener('submit', async function(ev) {
-  ev.preventDefault();
-  var ok = true;
-  ['nome_adv','area_direito','cliente','tipo_despesa','valor','descricao','data_despesa'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (!el.value.trim()) { el.style.borderColor = '#dc2626'; ok = false; }
-    else el.style.borderColor = '';
-  });
-  var area = document.querySelector('input[name="area"]:checked');
-  if (!area) { alert('Selecione a atuação.'); return; }
-  if (area.value === 'Contenciosa' && !document.getElementById('processo').value.trim()) {
-    document.getElementById('processo').style.borderColor = '#dc2626'; ok = false;
-  }
-  if (area.value === 'Consultiva' && !document.getElementById('nome_caso').value.trim()) {
-    document.getElementById('nome_caso').style.borderColor = '#dc2626'; ok = false;
-  }
-  var status = document.querySelector('input[name="status_pag"]:checked');
-  if (!status) { alert('Selecione o status do pagamento.'); return; }
-  var forma = document.querySelector('input[name="forma_pag"]:checked');
-  if (!forma) { alert('Selecione a forma de pagamento.'); return; }
-  if (!ok) { alert('Preencha todos os campos obrigatórios.'); return; }
-
-  var btn = document.getElementById('btn-submit');
-  btn.disabled = true;
-  btn.textContent = 'Salvando...';
-  document.getElementById('loading-bar').classList.add('show');
-
-  var codigo = gerarCodigo();
-
-  // Upload do comprovante para Supabase Storage
-  var anexo_url = null;
-  var arquivo = document.getElementById('comprovante').files[0];
-  if (arquivo) {
-    var ext = arquivo.name.split('.').pop();
-    var path = codigo + '/' + Date.now() + '.' + ext;
-    var { data: upData, error: upError } = await sb.storage.from('comprovantes').upload(path, arquivo);
-    if (upError) {
-      btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
-      document.getElementById('loading-bar').classList.remove('show');
-      alert('Erro ao enviar anexo: ' + upError.message);
-      return;
-    }
-    var { data: urlData } = sb.storage.from('comprovantes').getPublicUrl(path);
-    anexo_url = urlData ? urlData.publicUrl : null;
-  }
-
-  var dados = {
-    codigo: codigo,
-    nome_adv: document.getElementById('nome_adv').value.trim(),
-    area_direito: document.getElementById('area_direito').value,
-    atuacao: area.value,
-    cliente: document.getElementById('cliente').value.trim(),
-    processo: document.getElementById('processo').value.trim() || null,
-    nome_caso: document.getElementById('nome_caso').value.trim() || null,
-    tipo_despesa: document.getElementById('tipo_despesa').value,
-    data_despesa: document.getElementById('data_despesa').value,
-    valor: parseFloat(document.getElementById('valor').value),
-    descricao: document.getElementById('descricao').value.trim(),
-    status_pagamento: status.value,
-    forma_pagamento: forma.value,
-    cod_boleto: document.getElementById('cod_boleto').value.trim() || null,
-    chave_pix: document.getElementById('chave_pix').value.trim() || null,
-    status: status.value === 'Pendente' ? 'Pendente' : 'Pago',
-    anexo_url: anexo_url,
-  };
-
-  var { error } = await sb.from('despesas').insert([dados]);
-  document.getElementById('loading-bar').classList.remove('show');
-
-  if (error) {
-    btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
-    alert('Erro ao salvar: ' + error.message);
-    return;
-  }
-
-  document.getElementById('form-body').style.display = 'none';
-  document.getElementById('success-code').textContent = codigo;
-  document.getElementById('success-msg').textContent = status.value === 'Pendente'
-    ? 'Solicitação enviada ao financeiro. Acompanhe no dashboard.'
-    : 'Comprovante registrado. Incluído no reembolso mensal do cliente.';
-  document.getElementById('success-screen').classList.add('show');
-});
-
-});
-window.novoLancamento = function() {
+function novoLancamento() {
   document.getElementById('success-screen').classList.remove('show');
   document.getElementById('form-body').style.display = 'block';
   document.getElementById('form').reset();
@@ -487,4 +477,292 @@ window.novoLancamento = function() {
   document.getElementById('upload-tag').textContent = 'Boleto, guia ou comprovante';
   var btn = document.getElementById('btn-submit');
   btn.disabled = false;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:non
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="stroke:white;fill:none;stroke-width:2;width:14px;height:14px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
+  document.getElementById('data_despesa').valueAsDate = new Date();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Área toggle
+  document.querySelectorAll('input[name="area"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      var cp = document.getElementById('campo_processo');
+      var cc = document.getElementById('campo_caso');
+      cp.classList.remove('show'); cc.classList.remove('show');
+      if (this.value === 'Contenciosa') cp.classList.add('show');
+      else cc.classList.add('show');
+    });
+  });
+
+  // Status pagamento
+  document.querySelectorAll('input[name="status_pag"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      document.getElementById('info_pend').classList.remove('show');
+      document.getElementById('info_paga').classList.remove('show');
+      var tag = document.getElementById('upload-tag');
+      if (this.value === 'Pendente') {
+        document.getElementById('info_pend').classList.add('show');
+        tag.textContent = 'Boleto ou guia a pagar (obrigatório)';
+      } else {
+        document.getElementById('info_paga').classList.add('show');
+        tag.textContent = 'Comprovante de pagamento (obrigatório)';
+      }
+    });
+  });
+
+  // Forma de pagamento
+  document.querySelectorAll('input[name="forma_pag"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+      document.getElementById('campo_boleto').classList.remove('show');
+      document.getElementById('campo_pix').classList.remove('show');
+      if (this.value === 'Boleto' || this.value === 'Guia de tributo') {
+        document.getElementById('campo_boleto').classList.add('show');
+      } else if (this.value === 'PIX') {
+        document.getElementById('campo_pix').classList.add('show');
+      }
+    });
+  });
+
+  // Upload preview
+  document.getElementById('comprovante').addEventListener('change', function() {
+    var p = document.getElementById('upload-preview');
+    if (this.files && this.files[0]) {
+      document.getElementById('upload-filename').textContent = this.files[0].name;
+      p.classList.add('show');
+    } else p.classList.remove('show');
+  });
+
+  document.getElementById('data_despesa').valueAsDate = new Date();
+
+  // Submit
+  document.getElementById('form').addEventListener('submit', async function(ev) {
+    ev.preventDefault();
+    var ok = true;
+    ['nome_adv','area_direito','cliente','tipo_despesa','valor','descricao','data_despesa'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) { el.style.borderColor = '#dc2626'; ok = false; }
+      else el.style.borderColor = '';
+    });
+    var area = document.querySelector('input[name="area"]:checked');
+    if (!area) { alert('Selecione a atuação.'); return; }
+    if (area.value === 'Contenciosa' && !document.getElementById('processo').value.trim()) {
+      document.getElementById('processo').style.borderColor = '#dc2626'; ok = false;
+    }
+    if (area.value === 'Consultiva' && !document.getElementById('nome_caso').value.trim()) {
+      document.getElementById('nome_caso').style.borderColor = '#dc2626'; ok = false;
+    }
+    var status = document.querySelector('input[name="status_pag"]:checked');
+    if (!status) { alert('Selecione o status do pagamento.'); return; }
+    var forma = document.querySelector('input[name="forma_pag"]:checked');
+    if (!forma) { alert('Selecione a forma de pagamento.'); return; }
+    if (!ok) { alert('Preencha todos os campos obrigatórios.'); return; }
+
+    var btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Salvando...';
+    document.getElementById('loading-bar').classList.add('show');
+
+    var codigo = gerarCodigo();
+
+    // Upload comprovante
+    var anexo_url = null;
+    var arquivo = document.getElementById('comprovante').files[0];
+    if (arquivo) {
+      var ext = arquivo.name.split('.').pop();
+      var path = codigo + '/' + Date.now() + '.' + ext;
+      var upResult = await sb.storage.from('comprovantes').upload(path, arquivo);
+      if (upResult.error) {
+        btn.disabled = false; btn.textContent = 'Lançar despesa';
+        document.getElementById('loading-bar').classList.remove('show');
+        alert('Erro no anexo: ' + upResult.error.message); return;
+      }
+    }
+
+    var dados = {
+      codigo: codigo,
+      nome_adv: document.getElementById('nome_adv').value.trim(),
+      area_direito: document.getElementById('area_direito').value,
+      atuacao: area.value,
+      cliente: document.getElementById('cliente').value.trim(),
+      processo: document.getElementById('processo').value.trim() || null,
+      nome_caso: document.getElementById('nome_caso').value.trim() || null,
+      tipo_despesa: document.getElementById('tipo_despesa').value,
+      data_despesa: document.getElementById('data_despesa').value,
+      valor: parseFloat(document.getElementById('valor').value),
+      descricao: document.getElementById('descricao').value.trim(),
+      status_pagamento: status.value,
+      forma_pagamento: forma.value,
+      cod_boleto: document.getElementById('cod_boleto').value.trim() || null,
+      chave_pix: document.getElementById('chave_pix').value.trim() || null,
+      status: status.value === 'Pendente' ? 'Pendente' : 'Pago',
+      anexo_url: anexo_url
+    };
+
+    var result = await sb.from('despesas').insert([dados]);
+    document.getElementById('loading-bar').classList.remove('show');
+
+    if (result.error) {
+      btn.disabled = false; btn.textContent = 'Lançar despesa';
+      alert('Erro ao salvar: ' + result.error.message); return;
+    }
+
+    document.getElementById('form-body').style.display = 'none';
+    document.getElementById('success-code').textContent = codigo;
+    document.getElementById('success-msg').textContent = status.value === 'Pendente'
+      ? 'Solicitação enviada ao financeiro. Acompanhe no dashboard.'
+      : 'Comprovante registrado. Incluído no reembolso mensal do cliente.';
+    document.getElementById('success-screen').classList.add('show');
+  });
+}); // DOMContentLoaded
+</script>
+// ── Área: contencioso / consultivo ──
+document.querySelectorAll('input[name="area"]').forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    var cp = document.getElementById('campo_processo');
+    var cc = document.getElementById('campo_caso');
+    cp.classList.remove('show');
+    cc.classList.remove('show');
+    if (this.value === 'Contencioso') {
+      cp.classList.add('show');
+    } else {
+      cc.classList.add('show');
+    }
+  });
+});
+
+// ── Status do pagamento ──
+document.querySelectorAll('input[name="status_pag"]').forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    document.getElementById('info_pend').classList.remove('show');
+    document.getElementById('info_paga').classList.remove('show');
+    var tag = document.getElementById('upload-tag');
+    if (this.value === 'Pendente') {
+      document.getElementById('info_pend').classList.add('show');
+      tag.textContent = 'Boleto ou guia a pagar (obrigatório)';
+    } else {
+      document.getElementById('info_paga').classList.add('show');
+      tag.textContent = 'Comprovante de pagamento (obrigatório)';
+    }
+  });
+});
+
+// ── Forma de pagamento ──
+document.querySelectorAll('input[name="forma_pag"]').forEach(function(radio) {
+  radio.addEventListener('change', function() {
+    document.getElementById('campo_boleto').classList.remove('show');
+    document.getElementById('campo_pix').classList.remove('show');
+    if (this.value === 'Boleto' || this.value === 'Guia de tributo') {
+      document.getElementById('campo_boleto').classList.add('show');
+    } else if (this.value === 'PIX') {
+      document.getElementById('campo_pix').classList.add('show');
+    }
+  });
+});
+
+// ── Upload preview ──
+document.getElementById('comprovante').addEventListener('change', function() {
+  var p = document.getElementById('upload-preview');
+  if (this.files && this.files[0]) {
+    document.getElementById('upload-filename').textContent = this.files[0].name;
+    p.classList.add('show');
+  } else {
+    p.classList.remove('show');
+  }
+});
+
+// ── Data padrão ──
+document.getElementById('data_despesa').valueAsDate = new Date();
+
+// ── Envio ──
+document.getElementById('form').addEventListener('submit', function(ev) {
+  ev.preventDefault();
+  var ok = true;
+  ['nome_adv','area_direito','cliente','tipo_despesa','valor','descricao','data_despesa'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el.value.trim()) { el.style.borderColor = '#dc2626'; ok = false; }
+    else el.style.borderColor = '';
+  });
+
+  var area = document.querySelector('input[name="area"]:checked');
+  if (!area) { alert('Selecione a área.'); return; }
+  if (area.value === 'Contencioso' && !document.getElementById('processo').value.trim()) {
+    document.getElementById('processo').style.borderColor = '#dc2626'; ok = false;
+  }
+  if (area.value === 'Consultivo' && !document.getElementById('nome_caso').value.trim()) {
+    document.getElementById('nome_caso').style.borderColor = '#dc2626'; ok = false;
+  }
+
+  var status = document.querySelector('input[name="status_pag"]:checked');
+  if (!status) { alert('Selecione o status do pagamento.'); return; }
+  var forma = document.querySelector('input[name="forma_pag"]:checked');
+  if (!forma) { alert('Selecione a forma de pagamento.'); return; }
+  if (!ok) { alert('Preencha todos os campos obrigatórios.'); return; }
+
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="animation:spin 1s linear infinite;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;width:14px;height:14px"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+  document.getElementById('loading-bar').classList.add('show');
+
+  var URL_APPS_SCRIPT = 'COLE_A_URL_DO_WEB_APP_AQUI';
+  if (URL_APPS_SCRIPT === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+    setTimeout(function() {
+      mostrarSucesso('DESP-26-03-' + String(Math.floor(Math.random()*9000)+1000), status.value);
+    }, 1500);
+    return;
+  }
+
+  fetch(URL_APPS_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify({
+      nome_adv: document.getElementById('nome_adv').value.trim(),
+      area_direito: document.getElementById('area_direito').value,
+      area: area.value,
+      cliente: document.getElementById('cliente').value.trim(),
+      processo: document.getElementById('processo').value.trim() || 'N/A',
+      nome_caso: document.getElementById('nome_caso').value.trim(),
+      tipo_despesa: document.getElementById('tipo_despesa').value,
+      data_despesa: document.getElementById('data_despesa').value,
+      valor: document.getElementById('valor').value,
+      descricao: document.getElementById('descricao').value.trim(),
+      status_pagamento: status.value,
+      forma_pagamento: forma.value,
+      cod_boleto: document.getElementById('cod_boleto').value.trim(),
+      chave_pix: document.getElementById('chave_pix').value.trim(),
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(resp) {
+    if (resp.ok) mostrarSucesso(resp.codigo, status.value);
+    else throw new Error(resp.erro || 'Erro');
+  })
+  .catch(function(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="stroke:white;fill:none;stroke-width:2;width:14px;height:14px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Lançar despesa';
+    document.getElementById('loading-bar').classList.remove('show');
+    alert('Erro: ' + err.message);
+  });
+});
+
+function mostrarSucesso(codigo, status) {
+  document.getElementById('loading-bar').classList.remove('show');
+  document.getElementById('form-body').style.display = 'none';
+  document.getElementById('success-code').textContent = codigo || 'Registrado!';
+  document.getElementById('success-msg').textContent = status === 'Pendente'
+    ? 'Solicitação de pagamento enviada ao financeiro e criada no Conta Azul.'
+    : 'Comprovante registrado. Despesa incluída no reembolso mensal do cliente.';
+  document.getElementById('success-screen').classList.add('show');
+}
+
+function novoLancamento() {
+  document.getElementById('success-screen').classList.remove('show');
+  document.getElementById('form-body').style.display = 'block';
+  document.getElementById('form').reset();
+  ['campo_processo','campo_caso','campo_boleto','campo_pix','info_pend','info_paga'].forEach(function(id) {
+    document.getElementById(id).classList.remove('show');
+  });
+  document.getElementById('upload-preview').classList.remove('show');
+  document.getElementById('upload-tag').textContent = 'Boleto, guia ou comprovante';
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="stroke:white;fill:none;
